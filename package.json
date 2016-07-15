@@ -1,0 +1,26 @@
+{
+  "name": "ennovate",
+  "version": "1.0.0",
+  "description": "Andela's JavaScript curriculum's fourth checkpoint",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-kndungu/ennovate.git"
+  },
+  "keywords": [
+    "react",
+    "mongodb",
+    "webpack",
+    "material-ui",
+    "node"
+  ],
+  "author": "Kinuthia Ndung'u",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andela-kndungu/ennovate/issues"
+  },
+  "homepage": "https://github.com/andela-kndungu/ennovate#readme"
+}
