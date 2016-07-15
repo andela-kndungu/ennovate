@@ -5,6 +5,7 @@
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
+    "dev": "NODE_ENV=development nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,5 +27,8 @@
   "homepage": "https://github.com/andela-kndungu/ennovate#readme",
   "dependencies": {
     "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.2"
   }
 }
