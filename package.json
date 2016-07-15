@@ -4,6 +4,7 @@
   "description": "Andela's JavaScript curriculum's fourth checkpoint",
   "main": "server/index.js",
   "scripts": {
+    "start": "node server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/andela-kndungu/ennovate/issues"
   },
-  "homepage": "https://github.com/andela-kndungu/ennovate#readme"
+  "homepage": "https://github.com/andela-kndungu/ennovate#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }
