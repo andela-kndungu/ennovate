@@ -1,0 +1,4 @@
+{
+  "exec": "npm run babel-node -- server/index.js"
+}
+
