@@ -1,12 +1,12 @@
-var express = require('express');
-var app = express();
-var PORT = process.env.PORT || 3000
+import express from 'express';
+let app = express();
+const PORT = process.env.PORT || 3000
 
-app.get('/', function(request, response) {
+app.get('/', (request, response) => {
   response.send('Hello World');
 });
 
-app.listen(PORT, function(error) {
+app.listen(PORT, (error) => {
   if (error) {
     console.log(error);
   } else {
