@@ -9,6 +9,7 @@ const muiTheme = getMuiTheme({
     primary1Color: '#607D8B',
     accent1Color: '#00BCD4',
   },
+  userAgent: 'all',
 });
 
 const App = () => {
