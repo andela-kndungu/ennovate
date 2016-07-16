@@ -4,7 +4,7 @@ import AppBar from 'material-ui/AppBar';
 const MyAppBar = () => {
   return (
     <AppBar
-      title="Hello World"
+      title="ennovate"
     />
   );
 };

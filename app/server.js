@@ -22,7 +22,7 @@ export default function render(req, res) {
   <head>
     <title>Server Side Rendering</title>
   </head>
-  <body>
+  <body style="margin:0px;">
     <div id="app">${componentHTML}</div>
     <script src="/assets/app.js"></script>
   </body>

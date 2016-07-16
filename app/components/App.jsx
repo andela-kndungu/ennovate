@@ -9,7 +9,7 @@ const muiTheme = getMuiTheme({
     primary1Color: '#607D8B',
     accent1Color: '#00BCD4',
   },
-  userAgent: 'all',
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36',
 });
 
 const App = () => {
