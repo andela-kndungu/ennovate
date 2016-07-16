@@ -1,7 +1,25 @@
 import React from 'react';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+import AppBar from './AppBar.jsx';
+
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: '#607D8B',
+    accent1Color: '#00BCD4',
+  },
+});
 
 const App = () => {
-  return (<h1>I am the App</h1>);
+  return (
+    <MuiThemeProvider muiTheme={muiTheme}>
+      <div>
+        <AppBar />
+        <h1>Hello World</h1>
+      </div>
+    </MuiThemeProvider>
+  );
 };
 
 export default App;
