@@ -1,4 +1,9 @@
 {
-  "exec": "npm run babel-node -- server/index.js"
+  "watch": [
+    "app",
+    "server",
+    "webpack"
+  ],
+  "exec": "npm run build:dev && npm run babel-node -- server/index.js"
 }
 
