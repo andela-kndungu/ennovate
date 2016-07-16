@@ -38,7 +38,6 @@ module.exports = {
     new webpack.DefinePlugin({
       __DEVCLIENT__: false,
       __DEVSERVER__: true
-    }),
-    new webpack.IgnorePlugin(/vertx/)
+    })
   ]
 }
