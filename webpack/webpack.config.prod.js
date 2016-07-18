@@ -2,10 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 
 var assetsPath = path.join(__dirname, '..', 'public', 'assets');
-var publicPath = '/assets/';
 
-module.exports = [{
-  name: 'Non-server-side',
+module.exports = {
   entry: path.join(__dirname, '../app/index.js'),
   devtool: 'source-map',
   output: {
@@ -21,6 +19,13 @@ module.exports = [{
       },
       exclude: path.join(__dirname, '..', 'node_modules')
     }]
-  }
-}];
+  },
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      },
+    })
+  ]
+};
 
