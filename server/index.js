@@ -1,11 +1,31 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const databaseUri = process.env.MONGODB_URI || 'mongodb://localhost/ennovate';
 
-// Connect to the database and get the connection
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username  }, function(err, user) {
+      if (err) { return done(err);  }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.'  });
+
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.'  });
+
+      }
+      return done(null, user);
+
+    });
+
+  }
+
+));/ Connect to the database and get the connection
 mongoose.connect(databaseUri);
 const dbConnection = mongoose.connection;
 
