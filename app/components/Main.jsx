@@ -10,7 +10,6 @@ const styles = {
   container: {
     textAlign: 'center',
     paddingTop: 200,
-
   },
 
 };
@@ -18,8 +17,8 @@ const styles = {
 const muiTheme = getMuiTheme({
   palette: {
     accent1Color: deepOrange500,
-
   },
+
 
 });
 
@@ -62,7 +61,7 @@ class Main extends React.Component {
         <div style={styles.container}>
           <Dialog
             open={this.state.open}
-            title="Super Secret Password"
+            title="Super SecretPassword"
             actions={standardActions}
             onRequestClose={this.handleRequestClose}
           >
