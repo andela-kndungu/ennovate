@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 const app = express();
 const PORT = process.env.PORT || 3000;
 const databaseUri = process.env.MONGODB_URI || 'mongodb://localhost/ennovate';
-const App = require('../public/assets/server');
 
 // Connect to the database and get the connection
 mongoose.connect(databaseUri);
@@ -19,7 +18,7 @@ dbConnection.once('open', () => {
   console.info('Successfully connected to db');
 });
 
-app.get('*', App.default);
+app.use(express.static('public'));
 
 app.listen(PORT, (error) => {
   if (error) {
