@@ -60,10 +60,10 @@ UserSchema.pre('save', function hash(next) {
 });
 
 // Validate hashed password
-UserSchema.methods.validatePassword = (providedPassword, callback) => {
+UserSchema.methods.validatePassword = function verify(password, callback) {
   // To be able to access the object from within the bcrypt function
   const user = this;
-  bcrypt.compare(providedPassword, user.password, (error, isMatch) => {
+  bcrypt.compare(password, user.password, (error, isMatch) => {
     if (error) {
       return callback(error);
     }

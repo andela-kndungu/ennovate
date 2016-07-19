@@ -7,7 +7,7 @@ import usersRoutes from './routes/users.js';
 import authenticate from '../controllers/authenticate';
 
 const router = (app) => {
-  // Accessible without being logged in
+  app.use('/', publicRoutes);
   app.use('/users', usersRoutes);
   // Protect sensitive routes
   app.use(authenticate.token);

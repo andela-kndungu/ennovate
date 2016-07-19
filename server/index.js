@@ -5,9 +5,13 @@ import bodyParser from 'body-parser';
 import router from './router';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const databaseUri = process.env.MONGODB_URI || 'mongodb://localhost/ennovate';
 
+if (!process.env.DATABASE_URI) {
+  require('dotenv').config();
+}
+
+const PORT = process.env.PORT;
+const databaseUri = process.env.MONGODB_URI;
 
 // Connect to the database and get the connection
 mongoose.connect(databaseUri);

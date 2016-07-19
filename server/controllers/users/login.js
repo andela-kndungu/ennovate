@@ -33,7 +33,7 @@ const login = (req, res) => {
         const token = jwt.sign(user, process.env.SECRET_KEY, {
           expiresIn: '90 days',
         });
-        user.doc.token = token;
+        user._doc.token = token;
 
         // Return token and success message in JSON
         return res.json(user);
