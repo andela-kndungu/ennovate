@@ -1,31 +1,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
+import bodyParser from 'body-parser';
+
+import router from './router';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const databaseUri = process.env.MONGODB_URI || 'mongodb://localhost/ennovate';
 
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username  }, function(err, user) {
-      if (err) { return done(err);  }
-      if (!user) {
-        return done(null, false, { message: 'Incorrect username.'  });
 
-      }
-      if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.'  });
-
-      }
-      return done(null, user);
-
-    });
-
-  }
-
-));/ Connect to the database and get the connection
+// Connect to the database and get the connection
 mongoose.connect(databaseUri);
 const dbConnection = mongoose.connection;
 
@@ -38,7 +22,18 @@ dbConnection.once('open', () => {
   console.info('Successfully connected to db');
 });
 
+// Set up bodyParser to get passed parameters and post bodies
+app.use(bodyParser.urlencoded({
+  extended: true,
+
+}));
+
+app.use(bodyParser.json());
+
 app.use(express.static('public'));
+
+// Handle all routes
+router(app);
 
 app.listen(PORT, (error) => {
   if (error) {

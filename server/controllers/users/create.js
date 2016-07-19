@@ -11,7 +11,7 @@ const create = (req, res) => {
   user.name.last = req.body.lastName;
   user.email = req.body.email;
   user.password = req.body.password;
-
+  console.log(user);
   // Save the new user parsing the error if request is invalid
   user.save((error) => {
     if (error) {

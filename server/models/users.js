@@ -43,7 +43,7 @@ const UserSchema = new Schema({
   },
 });
 
-UserSchema.pre('save', (next) => {
+UserSchema.pre('save', function hash(next) {
   // To be able to access the user object from within the bcrypt function
   const user = this;
 
