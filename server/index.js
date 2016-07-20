@@ -1,9 +1,9 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 
+import connect from './config/db';
 import router from './router';
 
 import { Strategy as LocalStrategy } from 'passport-local';
@@ -37,20 +37,7 @@ if (!process.env.DATABASE_URI) {
 }
 
 const PORT = process.env.PORT;
-const databaseUri = process.env.MONGODB_URI;
-
-// Connect to the database and get the connection
-mongoose.connect(databaseUri);
-const dbConnection = mongoose.connection;
-
-// Provide feedback on the DB connection
-dbConnection.on('error', (error) => {
-  console.error(error);
-});
-
-dbConnection.once('open', () => {
-  console.info('Successfully connected to db');
-});
+connect();
 
 // Set up bodyParser to get passed parameters and post bodies
 app.use(bodyParser.urlencoded({
