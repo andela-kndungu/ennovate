@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
-
-if (!process.env.DATABASE_URI) {
+if (!process.env.MONGODB_URI) {
   require('dotenv').config();
 }
 
+import mongoose from 'mongoose';
+
 const databaseUri = process.env.MONGODB_URI;
-const connect = () => {
+const dbConnect = () => {
   // Connect to the database and get the connection
   mongoose.connect(databaseUri);
   const dbConnection = mongoose.connection;
@@ -20,5 +20,5 @@ const connect = () => {
   });
 };
 
-export default connect;
+export default dbConnect;
 

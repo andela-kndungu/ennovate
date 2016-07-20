@@ -1,19 +1,25 @@
-import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import Users from '../../models/users.js';
 
-passport.use(new LocalStrategy({ session: false },
+const local = new LocalStrategy({ session: false },
   (username, password, done) => {
-    Users.findOne({ username }, (err, user) => {
-      if (err) { return done(err); }
+    Users.findOne({ username: username }, (err, user) => {
+      if (err) {
+        return done(err);
+      }
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
-      if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
-      }
-      return done(null, user);
+      user.validPassword(password, (error, match) => {
+        if (error) {
+          return done(null, false, { message: 'Incorrect password.' });
+        } else if (match) {
+          return done(null, user);
+        }
+      });
     });
   }
-));
+);
+
+export default local;
 
