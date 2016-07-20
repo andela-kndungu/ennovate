@@ -71,5 +71,17 @@ UserSchema.methods.validatePassword = function verify(password, callback) {
   });
 };
 
+// Validate hashed password
+UserSchema.methods.validPassword = function valid(password, callback) {
+  // To be able to access the object from within the bcrypt function
+  const user = this;
+  bcrypt.compare(password, user.password, (error, isMatch) => {
+    if (error) {
+      return callback(error);
+    }
+    return callback(null, isMatch);
+  });
+};
+
 export default mongoose.model('Users', UserSchema);
 

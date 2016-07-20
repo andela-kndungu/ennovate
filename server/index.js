@@ -1,8 +1,34 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
 
 import router from './router';
+
+import { Strategy as LocalStrategy } from 'passport-local';
+import Users from './models/users.js';
+
+passport.use(new LocalStrategy({ session: false },
+  (username, password, done) => {
+    Users.findOne({ username: username }, (err, user) => {
+      console.log(user);
+      if (err) {
+        return done(err);
+      }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      user.validPassword(password, (error, match) => {
+        if (error) {
+          return done(null, false, { message: 'Incorrect password.' });
+        } else if (match) {
+          return done(null, user);
+        }
+      });
+    });
+  }
+));
 
 const app = express();
 
@@ -33,9 +59,20 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(bodyParser.json());
+app.use(passport.initialize());
+app.post('/login',
+  passport.authenticate('local', { session: false, failureRedirect: '/' }),
+  (req, res) => {
+    console.log('hello');
+    const token = jwt.sign(req.user, process.env.SECRET_KEY, {
+      expiresIn: '90 days',
+    });
+    req.user._doc.token = token;
 
+    // Return token and success message in JSON
+    return res.json(req.user);
+  });
 app.use(express.static('public'));
-
 // Handle all routes
 router(app);
 
