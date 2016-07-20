@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import path from 'path';
+import passport from 'passport';
 
 import UsersController from '../../controllers/users';
 
@@ -14,7 +15,10 @@ router.get('/', (req, res) => {
 router.post('/users', UsersController.create);
 
 // Log in a user (POST /users/login)
-router.post('/users/login', UsersController.login);
+router.post('/api/users/login', passport.authenticate('local', {
+  session: false,
+  failureRedirect: '/',
+}), UsersController.login);
 
 module.exports = router;
 

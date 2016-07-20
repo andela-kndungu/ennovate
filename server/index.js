@@ -8,7 +8,7 @@ const app = express();
 config.db();
 
 // Setup passport strategies
-// config.passport();
+config.passport();
 
 // Add middleware to express
 config.express(app);
