@@ -20,14 +20,18 @@ const iconStyle = {
 const Icons = () => (
   <div style={outerDivStyle}>
     <div style={innnerDivStyle}>
-      <FlatButton
-        icon={<FontIcon className="icon-google-plus2" />}
-        style={iconStyle}
-      />
-      <FlatButton
-        icon={<FontIcon className="icon-github" />}
-        style={iconStyle}
-      />
+      <div style={{ display: 'inline' }} title="Login with Google">
+        <FlatButton
+          icon={<FontIcon className="icon-google-plus2" />}
+          style={iconStyle}
+        />
+      </div>
+      <div style={{ display: 'inline' }} title="Login with GitHub">
+        <FlatButton
+          icon={<FontIcon className="icon-github" />}
+          style={iconStyle}
+        />
+      </div>
     </div>
   </div>
 );
