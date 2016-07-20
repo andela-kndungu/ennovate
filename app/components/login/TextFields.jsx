@@ -32,7 +32,10 @@ const TextFields = () => (
       hintText="Password"
       style={fieldStyle}
     />
-    <FlatButton style={buttonStyle} label="LOGIN" />
+    <FlatButton
+      style={buttonStyle}
+      label="LOGIN"
+    />
   </div>
 );
 
