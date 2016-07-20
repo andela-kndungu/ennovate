@@ -31,7 +31,7 @@ class MyAppBar extends React.Component {
     const actions = [
       <FlatButton
         label="Cancel"
-        primary={true}
+        primary
         onTouchTap={this.handleClose}
       />,
     ];
