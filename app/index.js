@@ -4,7 +4,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { reducer as formReducer } from 'redux-form';
-
+import ab from 'superagent';
 import Main from './components/Main.jsx';
 
 injectTapEventPlugin();
@@ -12,7 +12,7 @@ injectTapEventPlugin();
 const reducers = {
   form: formReducer,
 };
-
+ab.post('/api/users/login').send({ username: 'a', password: 'ab' }).end(function(error, response) { console.log(response); });
 const reducer = combineReducers(reducers);
 const store = createStore(reducer);
 
