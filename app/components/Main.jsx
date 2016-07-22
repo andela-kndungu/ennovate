@@ -3,7 +3,6 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import AppBar from './AppBar.jsx';
-import { CounterContainer } from '../redux/containers/index.js';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -18,7 +17,6 @@ const Main = () => {
       <div>
         <AppBar />
         <h1>Hello World</h1>
-        <CounterContainer />
       </div>
     </MuiThemeProvider>
   );

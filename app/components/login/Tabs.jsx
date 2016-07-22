@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import Text from './TextFields.jsx';
+import LoginForm from './LoginForm.jsx';
 import Icons from './Icons.jsx';
 import Divider from './Divider.jsx';
 
@@ -10,7 +10,7 @@ const MyTabs = () => (
       <div>
         <Icons />
         <Divider />
-        <Text />
+        <LoginForm onSubmit={(values) => { console.log(values); }} />
       </div>
     </Tab>
     <Tab label="SIGNUP" >

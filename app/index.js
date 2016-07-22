@@ -1,15 +1,21 @@
 import React from 'react';
 import { render } from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import Main from './components/Main.jsx';
+import { reducer as formReducer } from 'redux-form';
 
-import reducer from './redux/reducers';
+import Main from './components/Main.jsx';
 
 injectTapEventPlugin();
 
+const reducers = {
+  form: formReducer,
+};
+
+const reducer = combineReducers(reducers);
 const store = createStore(reducer);
+
 render(
   <Provider store={store}>
     <Main />
