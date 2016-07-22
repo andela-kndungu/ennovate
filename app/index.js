@@ -1,12 +1,19 @@
 import React from 'react';
 import { render } from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import Main from './components/Main.jsx';
 
-import reducer from './redux/reducers';
+import counterReducer from './redux/reducers';
 
+import { reducer as formReducer } from 'redux-form';
+const reducers = {
+  form: formReducer,     // <---- Mounted at 'form'. See note below.
+  counter: counterReducer,
+};
+
+const reducer = combineReducers(reducers);
 injectTapEventPlugin();
 
 const store = createStore(reducer);
