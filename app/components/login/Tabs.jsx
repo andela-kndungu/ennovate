@@ -10,7 +10,7 @@ const MyTabs = () => (
       <div>
         <Icons />
         <Divider />
-        <LoginForm onSubmit={(values) => { console.log(values); }} />
+        <LoginForm />
       </div>
     </Tab>
     <Tab label="SIGNUP" >

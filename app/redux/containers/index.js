@@ -1,18 +1,12 @@
 import { connect } from 'react-redux';
 
-import Counter from '../../components/Counter.jsx';
-import { addCounter, removeCounter } from '../actions';
+import Home from '../../components/Home.jsx';
 
-function mapStateToProps(state) {
-  return { times: state.get('times', 1) };
-}
+const mapStateToProps = (state) => {
+  return ({
+    isAuthenticated: state.app.get('auth').get('isAuthenticated')
+  });
+};
 
-function mapDispatchToProps(dispatch) {
-  return {
-    add: (number) => dispatch(addCounter(number)),
-    remove: (number) => dispatch(removeCounter(number)),
-  };
-}
-export const CounterContainer = connect(mapStateToProps,
-  mapDispatchToProps)(Counter);
+export const HomeContainer = connect(mapStateToProps)(Home);
 
