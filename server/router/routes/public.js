@@ -20,8 +20,7 @@ router.post('/users', UsersController.create);
 
 // Log in a user (POST /users/login)
 router.post('/api/users/login', passport.authenticate('local', {
-  session: false,
-  failureRedirect: '/xyz',
+  session: false
 }), UsersController.login);
 
 module.exports = router;

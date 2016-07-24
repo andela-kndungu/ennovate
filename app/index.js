@@ -12,7 +12,7 @@ injectTapEventPlugin();
 const reducers = {
   form: formReducer,
 };
-ab.post('/api/users/login').send({ username: 'a', password: 'ab' }).end(function(error, response) { console.log(response); });
+ab.post('/api/users/login').send({ username: 'testy', password: 'abc' }).end(function(error, response) { console.log(response); });
 const reducer = combineReducers(reducers);
 const store = createStore(reducer);
 
