@@ -6,14 +6,14 @@ import Divider from './Divider.jsx';
 
 const MyTabs = () => (
   <Tabs>
-    <Tab label="LOGIN" >
+    <Tab label="LOG IN" >
       <div>
         <Icons />
         <Divider />
         <LoginForm />
       </div>
     </Tab>
-    <Tab label="SIGNUP" >
+    <Tab label="SIGN UP" >
       <div>
         <h2>Signup</h2>
         <p>Coming Soon</p>

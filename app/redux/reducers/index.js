@@ -8,7 +8,7 @@ const defaultState = fromJS({
 });
 
 export default function (state = defaultState, action) {
-  console.log(state);
+  let stateDuplicate = state;
   switch (action.type) {
     case 'ADD_COUNTER':
       return state.update('times', 1, (value) => {
@@ -19,17 +19,31 @@ export default function (state = defaultState, action) {
         return value - action.payload;
       });
     case 'LOG_IN_USER_SUCCESS':
-      console.log('Im in here');
-      const stateD = state.updateIn(['auth', 'isAuthenticated'], false, () => {
-        return true;
-      });
-      console.log(stateD.get('auth'));
-      return stateD.updateIn(['auth', 'token'], null, () => {
-        return action.payload.token;
-      });
-    case 'BA':
-      console.log('BA');
-      return state;
+      stateDuplicate = state.updateIn(
+        ['auth', 'isAuthenticated'],
+        false,
+        () => {
+          return true;
+        }
+      );
+
+      stateDuplicate = stateDuplicate.updateIn(
+        ['auth', 'username'],
+        '',
+        () => {
+          return action.payload.username;
+        }
+      );
+
+      stateDuplicate = stateDuplicate.updateIn(
+        ['auth', 'token'],
+        null,
+        () => {
+          return action.payload.token;
+        }
+      );
+
+      return stateDuplicate;
     default:
       return state;
   }

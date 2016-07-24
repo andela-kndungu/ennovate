@@ -27,7 +27,7 @@ const buttonStyle = {
   marginTop: '20px',
 };
 
-const LoginForm = (props) => {
+const LogInForm = (props) => {
   return (
     <div style={divStyle}>
       <div style={fieldStyle}>
@@ -51,14 +51,14 @@ const LoginForm = (props) => {
       </div>
       <FlatButton
         style={buttonStyle}
-        label="LOGIN"
+        label="LOG IN"
         onClick={props.handleSubmit}
       />
     </div>
   );
 };
 
-LoginForm.propTypes = {
+LogInForm.propTypes = {
   handleSubmit: React.PropTypes.func.isRequired,
 };
 
@@ -82,7 +82,8 @@ const logInUser = (username, password) => {
       store.dispatch({
         type: 'LOG_IN_USER_SUCCESS',
         payload: {
-          token: response.body.token
+          token: response.body.token,
+          username: response.body.username
         }
       });
     });
@@ -94,5 +95,5 @@ export default reduxForm({
   onSubmit: (values) => {
     logInUser(values.username, values.password);
   }
-})(LoginForm);
+})(LogInForm);
 

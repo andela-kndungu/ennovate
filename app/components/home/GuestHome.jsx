@@ -3,7 +3,7 @@ import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 import ActionAndroid from 'material-ui/svg-icons/action/input';
 import Dialog from 'material-ui/Dialog';
-import Tabs from './login/Tabs.jsx';
+import Tabs from '../login/Tabs.jsx';
 
 class MyAppBar extends React.Component {
   constructor() {
@@ -52,8 +52,7 @@ class MyAppBar extends React.Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
-        >
-        </Dialog>
+        />
       </AppBar>
     );
   }
