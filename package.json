@@ -58,6 +58,7 @@
     "redux-form": "^6.0.0-rc.3",
     "redux-form-material-ui": "^3.0.0",
     "rimraf": "^2.5.3",
+    "superagent": "^2.1.0",
     "webpack": "^1.13.1"
   },
   "devDependencies": {
