@@ -38,6 +38,7 @@ class MyAppBar extends React.Component {
     return (
       <AppBar
         title="ennovate"
+        iconElementLeft={<span></span>}
         iconElementRight={
           <FlatButton
             icon={<ActionAndroid />}
