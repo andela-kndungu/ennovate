@@ -6,6 +6,7 @@ const imageDiv = {
   margin: '5px',
   float: 'left'
 };
+
 const ProfileAvatar = (props) => {
   return (
     <div style={imageDiv}>
