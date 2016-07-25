@@ -1,30 +1,24 @@
 import express from 'express';
-import mongoose from 'mongoose';
+
+import config from './config';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const databaseUri = process.env.MONGODB_URI || 'mongodb://localhost/ennovate';
 
-// Connect to the database and get the connection
-mongoose.connect(databaseUri);
-const dbConnection = mongoose.connection;
+// Connect to the database
+config.db();
 
-// Provide feedback on the DB connection
-dbConnection.on('error', (error) => {
-  console.error(error);
-});
+// Setup passport strategies
+config.passport();
 
-dbConnection.once('open', () => {
-  console.info('Successfully connected to db');
-});
+// Add middleware to express
+config.express(app);
 
-app.use(express.static('public'));
-
-app.listen(PORT, (error) => {
+// Start taking requests
+app.listen(process.env.PORT, (error) => {
   if (error) {
     console.log(error);
   } else {
-    console.info('Server listening at port', PORT);
+    console.info('Server listening at port', process.env.PORT);
   }
 });
 
