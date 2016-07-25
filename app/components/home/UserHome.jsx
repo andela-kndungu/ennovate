@@ -2,9 +2,7 @@ import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import Paper from '../logout/Paper.jsx';
+import LogOutCard from '../logout/LogOutCard.jsx';
 
 class MyAppBar extends React.Component {
   constructor(props) {
@@ -51,7 +49,7 @@ class MyAppBar extends React.Component {
           targetOrigin={{ horizontal: 'left', vertical: 'top' }}
           onRequestClose={this.handleRequestClose}
         >
-          <Paper />
+          <LogOutCard />
         </Popover>
       </div>
     );
