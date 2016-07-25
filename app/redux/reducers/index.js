@@ -44,6 +44,32 @@ export default function (state = defaultState, action) {
       );
 
       return stateDuplicate;
+    case 'LOG_OUT_USER':
+      stateDuplicate = state.updateIn(
+        ['auth', 'isAuthenticated'],
+        false,
+        () => {
+          return false;
+        }
+      );
+
+      stateDuplicate = stateDuplicate.updateIn(
+        ['auth', 'username'],
+        '',
+        () => {
+          return '';
+        }
+      );
+
+      stateDuplicate = stateDuplicate.updateIn(
+        ['auth', 'token'],
+        null,
+        () => {
+          return '';
+        }
+      );
+
+      return stateDuplicate;
     default:
       return state;
   }
