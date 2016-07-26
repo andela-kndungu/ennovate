@@ -32,5 +32,14 @@ router.get('/api/users/login/auth/google/callback',
     session: false
   }), UsersController.login);
 
+router.get('/api/users/login/auth/github', passport.authenticate('github', {
+  scope: ['user:email']
+}));
+
+router.get('/api/users/login/auth/github/callback',
+  passport.authenticate('github', {
+    session: false
+  }), UsersController.login);
+
 module.exports = router;
 

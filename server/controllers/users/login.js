@@ -12,8 +12,6 @@ const login = (req, res) => {
     expiresIn: '90 days',
   });
 
-  req.user._doc.token = token;
-
   // Return token and success message in JSON
   return res.redirect(`/?token=${token}`);
 };

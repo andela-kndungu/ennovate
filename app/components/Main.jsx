@@ -16,6 +16,7 @@ const muiTheme = getMuiTheme({
 const processOauthToken = (props) => {
   const token = props.location.query.token;
   if (token) {
+    localStorage.setItem('token', token);
     const userInfo = jwtDecode(token);
     store.dispatch({
       type: 'LOG_IN_USER_SUCCESS',
@@ -25,8 +26,10 @@ const processOauthToken = (props) => {
     });
     props.history.push('/');
   }
+
   return null;
 };
+
 const Main = (props) => {
   processOauthToken(props);
   return (

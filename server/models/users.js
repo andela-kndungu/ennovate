@@ -43,6 +43,15 @@ const UserSchema = new Schema({
     },
   },
 
+  github: {
+    id: {
+      type: String,
+    },
+    token: {
+      type: String,
+    },
+  },
+
   photo: {
     type: String
   }
