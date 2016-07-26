@@ -2,11 +2,16 @@ import React from 'react';
 import { render } from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { Provider } from 'react-redux';
+import {
+  Router,
+  Route,
+  browserHistory } from 'react-router';
 
 import Main from './components/Main.jsx';
 import store from './redux/store';
 
 injectTapEventPlugin();
+
 const loginHelper = () => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -24,9 +29,12 @@ const loginHelper = () => {
   return null;
 };
 
-console.log(loginHelper());
+loginHelper();
+
 render(
   <Provider store={store}>
-    <Main />
+    <Router history={browserHistory}>
+      <Route path="/" component={Main} />
+    </Router>
   </Provider>, document.getElementById('app'));
 

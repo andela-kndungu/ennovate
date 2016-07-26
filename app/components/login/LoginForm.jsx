@@ -89,6 +89,16 @@ const logInUser = (username, password) => {
     });
 };
 
+const googleAuthe = () => {
+  request
+    .post('api/users/login/auth/google')
+    .end((error, response) => {
+      if (error) {
+        console.log(error);
+      }
+      console.log(response);
+    });
+};
 export default reduxForm({
   form: 'simple',
   fields,

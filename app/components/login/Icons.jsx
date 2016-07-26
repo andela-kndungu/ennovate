@@ -17,24 +17,27 @@ const iconStyle = {
   height: '60px',
 };
 
-const Icons = () => (
-  <div style={outerDivStyle}>
-    <div style={innnerDivStyle}>
-      <div style={{ display: 'inline' }} title="Login with Google">
-        <FlatButton
-          icon={<FontIcon className="icon-google-plus2" />}
-          style={iconStyle}
-        />
-      </div>
-      <div style={{ display: 'inline' }} title="Login with GitHub">
-        <FlatButton
-          icon={<FontIcon className="icon-github" />}
-          style={iconStyle}
-        />
+const Icons = () => {
+  return (
+    <div style={outerDivStyle}>
+      <div style={innnerDivStyle}>
+        <div style={{ display: 'inline' }} title="Login with Google">
+          <FlatButton
+            icon={<FontIcon className="icon-google-plus2" />}
+            style={iconStyle}
+            href="/api/users/login/auth/google"
+          />
+        </div>
+        <div style={{ display: 'inline' }} title="Login with GitHub">
+          <FlatButton
+            icon={<FontIcon className="icon-github" />}
+            style={iconStyle}
+          />
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Icons;
 
