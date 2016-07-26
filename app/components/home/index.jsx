@@ -8,7 +8,7 @@ const Home = (props) => {
     <div>
       {
         props.isAuthenticated
-          ? <User username={props.username} />
+          ? <User info={props.info} />
           : <Guest />
       }
     </div>
@@ -17,7 +17,7 @@ const Home = (props) => {
 
 Home.propTypes = {
   isAuthenticated: React.PropTypes.bool.isRequired,
-  username: React.PropTypes.string
+  info: React.PropTypes.object
 };
 
 export default Home;

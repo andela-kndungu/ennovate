@@ -37,7 +37,7 @@ class MyAppBar extends React.Component {
           title="ennovate"
           iconElementRight={
             <FlatButton
-              label={this.props.username}
+              label={this.props.info.username}
               onTouchTap={this.handleTouchTap}
             />
             }
@@ -49,7 +49,7 @@ class MyAppBar extends React.Component {
           targetOrigin={{ horizontal: 'left', vertical: 'top' }}
           onRequestClose={this.handleRequestClose}
         >
-          <LogOutCard />
+          <LogOutCard info={this.props.info} />
         </Popover>
       </div>
     );

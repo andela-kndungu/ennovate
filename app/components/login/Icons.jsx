@@ -21,12 +21,13 @@ const Icons = () => {
   return (
     <div style={outerDivStyle}>
       <div style={innnerDivStyle}>
-        <div style={{ display: 'inline' }} title="Login with Google">
-          <FlatButton
-            icon={<FontIcon className="icon-google-plus2" />}
-            style={iconStyle}
-            href="/api/users/login/auth/google"
-          />
+        <div style={{ display: 'inline' }} title="Log in with Google">
+          <a href="/api/users/login/auth/google">
+            <FlatButton
+              icon={<FontIcon className="icon-google-plus2" />}
+              style={iconStyle}
+            />
+          </a>
         </div>
         <div style={{ display: 'inline' }} title="Login with GitHub">
           <FlatButton

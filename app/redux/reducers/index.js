@@ -28,10 +28,10 @@ export default function (state = defaultState, action) {
       );
 
       stateDuplicate = stateDuplicate.updateIn(
-        ['auth', 'username'],
+        ['auth', 'info'],
         '',
         () => {
-          return action.payload.username;
+          return action.payload.userInfo;
         }
       );
 

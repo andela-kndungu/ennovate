@@ -54,7 +54,6 @@ class MyAppBar extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         />
-        <a href="/api/users/login/auth/google">click me</a>
       </AppBar>
     );
   }

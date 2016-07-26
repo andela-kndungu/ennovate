@@ -13,7 +13,7 @@ const ProfileAvatar = (props) => {
       <Avatar
         size={70}
         src={
-          props.imagaUrl ||
+          props.photo ||
           'https://upload.wikimedia.org/wikipedia/commons/0/07/Avatar_girl_face.png'
         }
         alt="Profile"
@@ -23,7 +23,7 @@ const ProfileAvatar = (props) => {
 };
 
 ProfileAvatar.propTypes = {
-  imagaUrl: React.PropTypes.string
+  photo: React.PropTypes.string
 };
 
 export default ProfileAvatar;
