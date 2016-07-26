@@ -6,3 +6,5 @@ node_modules
 assets
 compiled
 
+# We don't want to upload our secrets now do we?
+.env
