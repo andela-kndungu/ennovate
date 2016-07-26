@@ -6,6 +6,7 @@ import {
   Router,
   Route,
   browserHistory } from 'react-router';
+import jwtDecode from 'jwt-decode';
 
 import Main from './components/Main.jsx';
 import store from './redux/store';
@@ -15,14 +16,11 @@ injectTapEventPlugin();
 const loginHelper = () => {
   const token = localStorage.getItem('token');
   if (token) {
-    let base64Url = '';
-    base64Url = token.split('.')[1];
-    const username = JSON.parse(window.atob(base64Url))._doc.username;
+    const userInfo = jwtDecode(token);
     return store.dispatch({
       type: 'LOG_IN_USER_SUCCESS',
       payload: {
-        token,
-        username
+        userInfo
       }
     });
   }
