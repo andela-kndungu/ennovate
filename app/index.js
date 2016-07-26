@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 
 import Main from './components/Main.jsx';
 import store from './redux/store';
-
+import ab from 'superagent';
 injectTapEventPlugin();
 const loginHelper = () => {
   const token = localStorage.getItem('token');
@@ -23,7 +23,7 @@ const loginHelper = () => {
   }
   return null;
 };
-
+ab.get('/api/users/login/auth/google').end(function (error, res) { console.log(res); });
 console.log(loginHelper());
 render(
   <Provider store={store}>
