@@ -11,16 +11,20 @@ const container = {
   margin: '10px',
 };
 
-const LogOutCard = () => (
+const LogOutCard = (props) => (
   <div style={container}>
     <div>
-      <Avatar />
-      <Info />
+      <Avatar photo={props.info.photo} />
+      <Info name={props.info.name} email={props.info.email} />
     </div>
     <Divider />
     <Button />
   </div>
 );
+
+LogOutCard.propTypes = {
+  info: React.PropTypes.object
+};
 
 export default LogOutCard;
 

@@ -5,7 +5,7 @@ import Home from '../../components/home/index.jsx';
 const mapStateToProps = (state) => {
   return ({
     isAuthenticated: state.app.get('auth').get('isAuthenticated'),
-    username: state.app.get('auth').get('username')
+    info: state.app.get('auth').get('info'),
   });
 };
 

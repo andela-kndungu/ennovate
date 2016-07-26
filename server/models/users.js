@@ -6,8 +6,6 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   username: {
     type: String,
-    required: [true, 'A username must be provided'],
-    unique: true,
   },
 
   name: {
@@ -29,13 +27,25 @@ const UserSchema = new Schema({
 
   password: {
     type: String,
-    required: [true, 'A password must be provided'],
   },
 
   roles: {
     type: Array,
     default: ['user'],
   },
+
+  google: {
+    id: {
+      type: String,
+    },
+    token: {
+      type: String,
+    },
+  },
+
+  photo: {
+    type: String
+  }
 }, {
   timestamps: {
     createdAt: 'createdAt',
@@ -46,17 +56,19 @@ const UserSchema = new Schema({
 UserSchema.pre('save', function hash(next) {
   // To be able to access the user object from within the bcrypt function
   const user = this;
-
-  // Replace provided plain text password with hashed one
-  bcrypt.hash(user.password, null, null, (error, hashedPassword) => {
-    if (error) {
-      const err = new Error('Something went wrong hashing password');
-      next(err);
-    } else {
-      user.password = hashedPassword;
-      next();
-    }
-  });
+  if (user.password) {
+    // Replace provided plain text password with hashed one
+    bcrypt.hash(user.password, null, null, (error, hashedPassword) => {
+      if (error) {
+        const err = new Error('Something went wrong hashing password');
+        next(err);
+      } else {
+        user.password = hashedPassword;
+        next();
+      }
+    });
+  }
+  next();
 });
 
 // Validate hashed password

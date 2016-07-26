@@ -10,7 +10,7 @@ const router = (app) => {
   app.use('/', publicRoutes);
 
   // Protect sensitive routes
-  app.use(authenticate.token);
+  // app.use(authenticate.token);
   app.get('/abc', (req, res) => { res.send('hello'); });
 };
 

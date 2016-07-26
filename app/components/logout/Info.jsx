@@ -20,14 +20,14 @@ const email = {
 const Info = (props) => {
   return (
     <div style={infoDiv}>
-      <p style={name}>{props.name || 'Jane Doe'}</p>
+      <p style={name}>{`${props.name.first} ${props.name.last}` || 'Jane Doe'}</p>
       <p style={email}>{props.email || 'janedoe@email.com'}</p>
     </div>
   );
 };
 
 Info.propTypes = {
-  name: React.PropTypes.string,
+  name: React.PropTypes.object,
   email: React.PropTypes.string
 };
 
