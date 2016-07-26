@@ -18,6 +18,7 @@ const handleResponse = (token, refreshToken, profile, done) => {
           if (error) {
             throw err;
           }
+
           return done(null, user);
         });
       } else {
@@ -35,6 +36,7 @@ const handleResponse = (token, refreshToken, profile, done) => {
           if (er) {
             throw err;
           }
+
           return done(null, newUser);
         });
       }

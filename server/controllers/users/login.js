@@ -8,7 +8,7 @@ const login = (req, res) => {
   req.user._doc.token = token;
 
   // Return token and success message in JSON
-  return res.json(req.user);
+  return res.redirect(`/?token=${token}`);
 };
 
 export default login;

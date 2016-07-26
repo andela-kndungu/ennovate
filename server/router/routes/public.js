@@ -29,8 +29,7 @@ router.get('/api/users/login/auth/google', passport.authenticate('google', {
 
 router.get('/api/users/login/auth/google/callback',
   passport.authenticate('google', {
-    session: false,
-    successRedirect: '/?tokenn=abc'
+    session: false
   }), UsersController.login);
 
 module.exports = router;
