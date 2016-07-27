@@ -4,13 +4,9 @@ import { Field, reduxForm } from 'redux-form';
 import { TextField } from 'redux-form-material-ui';
 import request from 'superagent';
 
-import store from '../../redux/store';
+import store from '../../../redux/store';
 
 const fields = ['username', 'password'];
-
-const divStyle = {
-  marginTop: '20px',
-};
 
 const fieldStyle = {
   display: 'block',
@@ -29,7 +25,7 @@ const buttonStyle = {
 
 const LogInForm = (props) => {
   return (
-    <div style={divStyle}>
+    <div>
       <div style={fieldStyle}>
         <Field
           style={{ width: '100%' }}
