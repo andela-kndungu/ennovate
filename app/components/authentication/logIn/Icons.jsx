@@ -29,7 +29,7 @@ const Icons = () => {
             />
           </a>
         </div>
-        <div style={{ display: 'inline' }} title="Login with GitHub">
+        <div style={{ display: 'inline' }} title="Log in with GitHub">
           <a href="/api/users/login/auth/github">
             <FlatButton
               icon={<FontIcon className="icon-github" />}

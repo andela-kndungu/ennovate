@@ -1,8 +1,8 @@
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 
-import constants from '../../redux/constants';
-import store from '../../redux/store';
+import constants from '../../../redux/constants';
+import store from '../../../redux/store';
 
 const button = {
   textAlign: 'right',

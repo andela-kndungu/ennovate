@@ -2,7 +2,7 @@ import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
-import LogOutCard from '../logout/LogOutCard.jsx';
+import LogOutCard from '../authentication/logOut/LogOutCard.jsx';
 
 class MyAppBar extends React.Component {
   constructor(props) {
