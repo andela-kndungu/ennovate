@@ -56,7 +56,7 @@ const validate = (values) => {
   return errors;
 };
 
-const LogInForm = (props) => {
+const SignUpForm = (props) => {
   return (
     <div style={divStyle}>
       <div style={fieldStyle}>
@@ -112,34 +112,25 @@ const LogInForm = (props) => {
   );
 };
 
-LogInForm.propTypes = {
+SignUpForm.propTypes = {
   handleSubmit: React.PropTypes.func.isRequired,
 };
 
-const logInUser = (username, password) => {
+const signUpUser = (values) => {
+  console.log(values);
   request
-    .post('api/users/login')
-    .send({
-      username,
-      password
-    })
+    .post('api/users')
+    .send(values)
     .end((error, response) => {
       if (error) {
         store.dispatch({
-          type: 'LOG_IN_USER_FAILURE',
+          type: 'SIGN_UP_USER_FAILURE',
           payload: {
             error
           }
         });
       }
-      localStorage.setItem('token', response.body.token);
-      store.dispatch({
-        type: 'LOG_IN_USER_SUCCESS',
-        payload: {
-          token: response.body.token,
-          username: response.body.username
-        }
-      });
+      console.log(response.body);
     });
 };
 
@@ -148,7 +139,7 @@ export default reduxForm({
   validate,
   fields,
   onSubmit: (values) => {
-    logInUser(values.username, values.password);
+    signUpUser(values);
   }
-})(LogInForm);
+})(SignUpForm);
 

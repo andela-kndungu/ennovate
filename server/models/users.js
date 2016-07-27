@@ -76,21 +76,10 @@ UserSchema.pre('save', function hash(next) {
         next();
       }
     });
+  } else {
+    next();
   }
-  next();
 });
-
-// Validate hashed password
-UserSchema.methods.validatePassword = function verify(password, callback) {
-  // To be able to access the object from within the bcrypt function
-  const user = this;
-  bcrypt.compare(password, user.password, (error, isMatch) => {
-    if (error) {
-      return callback(error);
-    }
-    return callback(null, isMatch);
-  });
-};
 
 // Validate hashed password
 UserSchema.methods.validPassword = function valid(password, callback) {

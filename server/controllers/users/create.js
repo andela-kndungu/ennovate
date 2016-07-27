@@ -2,24 +2,47 @@ import Users from '../../models/users.js';
 import parseError from '../parseError.js';
 
 const create = (req, res) => {
-  // Declare new instance of the Users model
-  const user = new Users();
-
-  // Define values of the new object to add
-  user.username = req.body.username;
-  user.name.first = req.body.firstName;
-  user.name.last = req.body.lastName;
-  user.email = req.body.email;
-  user.password = req.body.password;
-  console.log(user);
-  // Save the new user parsing the error if request is invalid
-  user.save((error) => {
+  Users.findOne({ email: req.body.email }, (error, user) => {
     if (error) {
       return parseError(res, error);
     }
 
-    // User created, return created user
-    return res.json(user);
+    if (user) {
+      user.username = req.body.username;
+      user.password = req.body.password;
+      user.firstName = req.body.firstName;
+      user.lastName = req.body.lastName;
+
+      user.save((err) => {
+        if (err) {
+          return parseError(res, err);
+        }
+        console.log('inside save');
+        console.log(user);
+
+        // User created, return created user
+        return res.json(user);
+      });
+    } else {
+      // Declare new instance of the Users model
+      const newUser = new Users();
+
+      // Define values of the new object to add
+      newUser.username = req.body.username;
+      newUser.name.first = req.body.firstName;
+      newUser.name.last = req.body.lastName;
+      newUser.email = req.body.email;
+      newUser.password = req.body.password;
+      // Save the new user parsing the error if request is invalid
+      newUser.save((er) => {
+        if (er) {
+          return parseError(res, er);
+        }
+
+        // User created, return created user
+        return res.json(newUser);
+      });
+    }
   });
 };
 

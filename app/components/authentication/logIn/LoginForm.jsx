@@ -6,7 +6,7 @@ import request from 'superagent';
 
 import store from '../../../redux/store';
 
-const fields = ['username', 'password'];
+const fields = ['usernameLogin', 'passwordLogin'];
 
 const fieldStyle = {
   display: 'block',
@@ -29,7 +29,7 @@ const LogInForm = (props) => {
       <div style={fieldStyle}>
         <Field
           style={{ width: '100%' }}
-          name="username"
+          name="usernameLogin"
           component={TextField}
           hintText="Username"
           floatingLabelText="Username"
@@ -38,7 +38,7 @@ const LogInForm = (props) => {
       <div style={fieldStyle}>
         <Field
           style={{ width: '100%' }}
-          name="password"
+          name="passwordLogin"
           component={TextField}
           hintText="Password"
           floatingLabelText="Password"
@@ -60,7 +60,7 @@ LogInForm.propTypes = {
 
 const logInUser = (username, password) => {
   request
-    .post('api/users/login')
+    .post('/api/users/login')
     .send({
       username,
       password
@@ -79,17 +79,17 @@ const logInUser = (username, password) => {
         type: 'LOG_IN_USER_SUCCESS',
         payload: {
           token: response.body.token,
-          username: response.body.username
+          userInfo: response.body.userInfo
         }
       });
     });
 };
 
 export default reduxForm({
-  form: 'simple',
+  form: 'login',
   fields,
   onSubmit: (values) => {
-    logInUser(values.username, values.password);
+    logInUser(values.usernameLogin, values.passwordLogin);
   }
 })(LogInForm);
 
