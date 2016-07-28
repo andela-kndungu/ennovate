@@ -5,8 +5,9 @@ import FlatButton from 'material-ui/FlatButton';
 const CardExampleWithAvatar = () => (
   <Card style={{ width: '300px', margin: '20px', float: 'left' }}>
     <CardHeader
+      style={{ fontSize: '15px' }}
       title="kinuthia"
-      subtitle="3/4/2016"
+      subtitle={<div style={{ fontSize: '11px' }}><div>31/1/2999</div><div>24:59</div></div>}
       avatar="http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png"
     />
     <CardTitle title="Card title" />

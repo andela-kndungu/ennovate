@@ -17,8 +17,6 @@ const create = (req, res) => {
         if (err) {
           return parseError(res, err);
         }
-        console.log('inside save');
-        console.log(user);
 
         // User created, return created user
         return res.json(user);
