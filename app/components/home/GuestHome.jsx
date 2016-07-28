@@ -5,6 +5,8 @@ import ActionAndroid from 'material-ui/svg-icons/action/input';
 import Dialog from 'material-ui/Dialog';
 import Tabs from '../authentication/Tabs.jsx';
 
+import Card from '../cards/Test.jsx';
+
 class MyAppBar extends React.Component {
   constructor() {
     super();
@@ -32,25 +34,39 @@ class MyAppBar extends React.Component {
       />,
     ];
     return (
-      <AppBar
-        title="ennovate"
-        iconElementLeft={<span></span>}
-        iconElementRight={
-          <FlatButton
-            icon={<ActionAndroid />}
-            label="LOGIN"
-            onTouchTap={this.handleOpen}
-          />
-          }
-      >
-        <Dialog
-          title={<Tabs />}
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-        />
-      </AppBar>
+      <div>
+        <AppBar
+          title="ennovate"
+          iconElementLeft={<span></span>}
+          iconElementRight={
+            <FlatButton
+              icon={<ActionAndroid />}
+              label="LOGIN"
+              onTouchTap={this.handleOpen}
+            />
+            }
+          >
+            <Dialog
+              title={<Tabs />}
+              actions={actions}
+              modal={false}
+              open={this.state.open}
+              onRequestClose={this.handleClose}
+            />
+          </AppBar>
+          <div>
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+          </div>
+        </div>
     );
   }
 }
