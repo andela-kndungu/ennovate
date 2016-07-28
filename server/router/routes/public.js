@@ -3,6 +3,7 @@ import path from 'path';
 import passport from 'passport';
 
 import UsersController from '../../controllers/users';
+import DocumentsController from '../../controllers/documents';
 
 const router = Router();
 
@@ -17,6 +18,9 @@ router.get('/xyz', (req, res) => {
 });
 // Create a user (POST /users)
 router.post('/api/users', UsersController.create);
+
+// Create a document (POST /users)
+router.post('/api/documents', DocumentsController.create);
 
 // Log in a user (POST /users/login)
 router.post('/api/users/login', passport.authenticate('local', {

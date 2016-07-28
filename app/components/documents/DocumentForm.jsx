@@ -85,8 +85,12 @@ SignUpForm.propTypes = {
 const signUpUser = (values) => {
   console.log(values);
   request
-    .post('api/users')
-    .send(values)
+    .post('api/documents')
+    .send({
+      owner: 'Placeholder',
+      title: values.title,
+      content: values.content
+    })
     .end((error, response) => {
       if (error) {
         store.dispatch({

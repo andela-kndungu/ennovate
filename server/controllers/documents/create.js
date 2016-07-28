@@ -8,6 +8,7 @@ const create = (req, res) => {
   const document = new Documents();
 
   // Define values of the new objet to add
+  document.owner = req.body.owner;
   document.title = req.body.title;
   document.content = req.body.content;
   document.tags = req.body.tags || [];

@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const DocumentsSchema = new Schema({
-  ownerId: {
+  owner: {
     type: String,
   },
 
