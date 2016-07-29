@@ -6,38 +6,18 @@ import {
   Router,
   Route,
   browserHistory } from 'react-router';
-import jwtDecode from 'jwt-decode';
 
 import Main from './components/Main.jsx';
 import store from './redux/store';
-import io from 'socket.io-client';
+import localLogin from './login';
 
-const socket = io.connect('http://127.0.0.1:3000');
 injectTapEventPlugin();
-socket.on('message', message => {
-  console.log('message');
-});
-
-const loginHelper = () => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    const userInfo = jwtDecode(token);
-    return store.dispatch({
-      type: 'LOG_IN_USER_SUCCESS',
-      payload: {
-        userInfo
-      }
-    });
-  }
-  return null;
-};
-
-loginHelper();
+localLogin();
 
 render(
   <Provider store={store}>
-  <Router history={browserHistory}>
-  <Route path="/" component={Main} />
-  </Router>
+    <Router history={browserHistory}>
+      <Route path="/" component={Main} />
+    </Router>
   </Provider>, document.getElementById('app'));
 
