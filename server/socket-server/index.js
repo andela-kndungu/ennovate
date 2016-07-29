@@ -4,13 +4,13 @@ export default function (server) {
   const socketServer = io(server);
   const connections = [];
 
-  socketServer.on('connection', socket => {
-    console.log(socket);
+  socketServer.on('connection', (socket) => {
     connections.push(socket);
 
-    socket.on('message', data => {
+    socket.on('newDocument', (data) => {
       connections.forEach(connectedSocket => {
-        connectedSocket.emit('message', data);
+        connectedSocket.emit('newDocument', data);
+        console.log('emmited');
       });
     });
 
@@ -20,3 +20,4 @@ export default function (server) {
     });
   });
 }
+

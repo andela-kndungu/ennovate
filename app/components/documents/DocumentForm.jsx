@@ -5,7 +5,9 @@ import { TextField } from 'redux-form-material-ui';
 import request from 'superagent';
 
 import store from '../../redux/store';
+import io from 'socket.io-client';
 
+const socket = io.connect('http://127.0.0.1:3000');
 const fields = [
   'title',
   'content'
@@ -100,6 +102,7 @@ const signUpUser = (values) => {
           }
         });
       }
+      socket.emit('newDocument', response.body);
       console.log(response.body);
     });
 };
