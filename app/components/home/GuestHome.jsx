@@ -11,7 +11,12 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import Add from '../documents/Add.jsx';
 import request from 'superagent';
 import store from '../../redux/store';
+import io from 'socket.io-client';
 
+const socket = io.connect('http://127.0.0.1:3000');
+socket.on('message', message => {
+  console.log('message');
+});
 const style = {
   margin: 0,
   top: 'auto',
@@ -116,7 +121,7 @@ class MyAppBar extends React.Component {
             {console.log(nodes)}
             {nodes}
           </div>
-          <FloatingActionButton onTouchTap={this.openDocument} style={style} secondary={true}>
+          <FloatingActionButton onTouchTap={() => { socket.emit('message', { a: 'b'} ) }} style={style} secondary={true}>
             <ContentAdd />
           </FloatingActionButton>
         </div>
