@@ -9,7 +9,7 @@ import {
 
 import Main from './components/Main.jsx';
 import store from './redux/store';
-import localLogin from './login';
+import { localLogin } from './login';
 
 injectTapEventPlugin();
 localLogin();
