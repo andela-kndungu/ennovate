@@ -10,8 +10,13 @@ import jwtDecode from 'jwt-decode';
 
 import Main from './components/Main.jsx';
 import store from './redux/store';
+import io from 'socket.io-client';
 
+const socket = io.connect('http://127.0.0.1:3000');
 injectTapEventPlugin();
+socket.on('message', message => {
+  console.log('message');
+});
 
 const loginHelper = () => {
   const token = localStorage.getItem('token');
@@ -31,8 +36,8 @@ loginHelper();
 
 render(
   <Provider store={store}>
-    <Router history={browserHistory}>
-      <Route path="/" component={Main} />
-    </Router>
+  <Router history={browserHistory}>
+  <Route path="/" component={Main} />
+  </Router>
   </Provider>, document.getElementById('app'));
 
