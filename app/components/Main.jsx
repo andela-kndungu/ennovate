@@ -2,7 +2,7 @@ import React from 'react';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import { Home } from '../redux/containers';
+import Home from '../redux/containers/Home.jsx';
 import { oauthToken } from '../login';
 
 const muiTheme = getMuiTheme({
@@ -19,9 +19,7 @@ const Main = (props) => {
 
   return (
     <MuiThemeProvider muiTheme={muiTheme}>
-      <div>
-        <Home />
-      </div>
+      <Home />
     </MuiThemeProvider>
   );
 };
