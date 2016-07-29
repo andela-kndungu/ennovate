@@ -9,6 +9,8 @@ import Card from '../cards/Test.jsx';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Add from '../documents/Add.jsx';
+import request from 'superagent';
+import store from '../../redux/store';
 
 const style = {
   margin: 0,
@@ -29,6 +31,14 @@ class MyAppBar extends React.Component {
     this.handleClose = this.handleClose.bind(this);
     this.openDocument = this.openDocument.bind(this);
     this.closeDocument = this.closeDocument.bind(this);
+  }
+
+  componentWillMount() {
+    request.get('api/documents')
+      .end((error, response) => {
+        store.dispatch({ type: 'FETCHED_DOCUMENTS', payload: response.body });
+      });
+    console.log('will mount');
   }
 
   handleOpen() {
@@ -62,6 +72,18 @@ class MyAppBar extends React.Component {
         onTouchTap={this.closeDocument}
       />,
     ];
+
+    const nodes = this.props.documents.map((document) => {
+      return (
+        <Card
+          title={document.title}
+          content={document.content}
+          owner={'document.owner'}
+          date={document.createdAt}
+        />
+      );
+    });
+    console.log(nodes);
     return (
       <div>
         <AppBar
@@ -91,16 +113,8 @@ class MyAppBar extends React.Component {
             />
           </AppBar>
           <div>
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            {console.log(nodes)}
+            {nodes}
           </div>
           <FloatingActionButton onTouchTap={this.openDocument} style={style} secondary={true}>
             <ContentAdd />

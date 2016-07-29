@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import jwtDecode from 'jwt-decode';
 
 import store from '../redux/store';
-import { HomeContainer as Home } from '../redux/containers';
+import { Home } from '../redux/containers';
 
 const muiTheme = getMuiTheme({
   palette: {

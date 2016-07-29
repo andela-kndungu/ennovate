@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Guest from './GuestHome.jsx';
+import GuestContainer from '../../redux/containers/GuestContainer.js';
 import User from './UserHome.jsx';
 
 const Home = (props) => {
@@ -9,7 +9,7 @@ const Home = (props) => {
       {
         props.isAuthenticated
           ? <User info={props.info} />
-          : <Guest />
+          : <GuestContainer />
       }
     </div>
   );

@@ -22,6 +22,9 @@ router.post('/api/users', UsersController.create);
 // Create a document (POST /users)
 router.post('/api/documents', DocumentsController.create);
 
+// Create a document (POST /users)
+router.get('/api/documents', DocumentsController.find.all);
+
 // Log in a user (POST /users/login)
 router.post('/api/users/login', passport.authenticate('local', {
   session: false

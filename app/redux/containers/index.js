@@ -1,13 +1,7 @@
-import { connect } from 'react-redux';
+import HomeContainer from './Home.jsx';
+import GuestHome from './GuestContainer.js';
 
-import Home from '../../components/home/index.jsx';
-
-const mapStateToProps = (state) => {
-  return ({
-    isAuthenticated: state.app.get('auth').get('isAuthenticated'),
-    info: state.app.get('auth').get('info'),
-  });
-};
-
-export const HomeContainer = connect(mapStateToProps)(Home);
+export const Home = HomeContainer;
+export const Guest = GuestHome;
+// export default { HomeContainer, GuestHome };
 
