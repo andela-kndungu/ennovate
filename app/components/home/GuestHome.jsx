@@ -23,8 +23,8 @@ socket.on('newDocument', () => {
 const style = {
   margin: 0,
   top: 'auto',
-  right: 20,
-  bottom: 20,
+  right: 10,
+  bottom: 10,
   left: 'auto',
   position: 'fixed',
 };
@@ -121,7 +121,7 @@ class GuestAppBar extends React.Component {
           open={this.state.addDocumentOpen}
           onRequestClose={this.closeDocument}
         />
-        <div>
+        <div style={{ display: 'flex', justifyContent: 'center', flexFlow: 'wrap' }}>
           {nodes}
         </div>
         <FloatingActionButton
