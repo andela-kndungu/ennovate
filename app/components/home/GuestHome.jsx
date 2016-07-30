@@ -106,6 +106,7 @@ class GuestAppBar extends React.Component {
               onTouchTap={this.openLogin}
             />
             }
+          style={{ position: 'fixed' }}
         />
         <Dialog
           title={<Tabs />}
@@ -121,7 +122,8 @@ class GuestAppBar extends React.Component {
           open={this.state.addDocumentOpen}
           onRequestClose={this.closeDocument}
         />
-        <div style={{ display: 'flex', justifyContent: 'center', flexFlow: 'wrap' }}>
+        <div style={{ height: '64px' }}></div>
+        <div style={{ display: 'flex', justifyContent: 'center', flexFlow: 'wrap', backgroundColor: 'ghostWhite' }}>
           {nodes}
         </div>
         <FloatingActionButton

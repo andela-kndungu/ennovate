@@ -10,7 +10,7 @@ const CardExampleWithAvatar = (props) => (
       subtitle={<div style={{ fontSize: '11px' }}><div>{props.date}</div><div>{props.date}</div></div>}
       avatar="http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png"
     />
-    <CardTitle title={props.owner} />
+    <CardTitle title={props.title} />
     <CardText>
       <div>
         {props.content}
