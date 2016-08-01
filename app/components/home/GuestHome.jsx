@@ -9,76 +9,77 @@ import Card from '../cards/Test.jsx';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Add from '../documents/Add.jsx';
-import request from 'superagent';
 import store from '../../redux/store';
-import io from 'socket.io-client';
+import socket from '../../socket';
 
-const socket = io.connect('http://127.0.0.1:3000');
-socket.on('newDocument', message => {
-  console.log('received');
-  request.get('api/documents')
-    .end((error, response) => {
-      store.dispatch({ type: 'FETCHED_DOCUMENTS', payload: response.body });
-      console.log('and dispatched')
-    });
+import { fetchDocuments } from '../../redux/actions';
+
+socket.on('newDocument', () => {
+  fetchDocuments((action) => {
+    store.dispatch(action);
+  });
 });
+
 const style = {
   margin: 0,
   top: 'auto',
-  right: 20,
-  bottom: 20,
+  right: 10,
+  bottom: 10,
   left: 'auto',
   position: 'fixed',
 };
 
-class MyAppBar extends React.Component {
+class GuestAppBar extends React.Component {
   constructor() {
     super();
 
-    this.state = { open: false, openDocument: false };
+    this.state = {
+      loginOpen: false,
+      addDocumentOpen: false
+    };
 
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.openDocument = this.openDocument.bind(this);
-    this.closeDocument = this.closeDocument.bind(this);
+    this.openLogin = this.openLogin.bind(this);
+    this.closeLogin = this.closeLogin.bind(this);
+    this.openAddDocument = this.openAddDocument.bind(this);
+    this.closeAddDocument = this.closeAddDocument.bind(this);
   }
 
   componentWillMount() {
-    request.get('api/documents')
-      .end((error, response) => {
-        store.dispatch({ type: 'FETCHED_DOCUMENTS', payload: response.body });
-      });
+    fetchDocuments((action) => {
+      store.dispatch(action);
+    });
   }
 
-  handleOpen() {
-    this.setState({ open: true });
+  openLogin() {
+    this.setState({ loginOpen: true });
   }
 
-  openDocument() {
-    this.setState({ openDocument: true });
+  openAddDocument() {
+    this.setState({ addDocumentOpen: true });
   }
 
-  handleClose() {
-    this.setState({ open: false });
+  closeLogin() {
+    this.setState({ loginOpen: false });
   }
 
-  closeDocument() {
-    this.setState({ openDocument: false });
+  closeAddDocument() {
+    this.setState({ addDocumentOpen: false });
   }
 
   render() {
-    const actions = [
+    const loginDialogActions = [
       <FlatButton
         label="Cancel"
         primary
-        onTouchTap={this.handleClose}
+        onTouchTap={this.closeLogin}
       />,
     ];
-    const actionsDocument = [
+
+    const addDocumentDialogActions = [
       <FlatButton
         label="Cancel"
         primary
-        onTouchTap={this.closeDocument}
+        onTouchTap={this.closeAddDocument}
       />,
     ];
 
@@ -89,6 +90,7 @@ class MyAppBar extends React.Component {
           content={document.content}
           owner={'document.owner'}
           date={document.createdAt}
+          key={document.createdAt}
         />
       );
     });
@@ -101,35 +103,44 @@ class MyAppBar extends React.Component {
             <FlatButton
               icon={<ActionAndroid />}
               label="LOGIN"
-              onTouchTap={this.handleOpen}
+              onTouchTap={this.openLogin}
             />
             }
-          >
-            <Dialog
-              title={<Tabs />}
-              actions={actions}
-              modal={false}
-              open={this.state.open}
-              onRequestClose={this.handleClose}
-            />
-            <Dialog
-              title={<Add />}
-              actions={actionsDocument}
-              modal={false}
-              open={this.state.openDocument}
-              onRequestClose={this.closeDocument}
-            />
-          </AppBar>
-          <div>
-            {nodes}
-          </div>
-          <FloatingActionButton onTouchTap={this.openDocument} style={style} secondary={true}>
-            <ContentAdd />
-          </FloatingActionButton>
+          style={{ position: 'fixed' }}
+        />
+        <Dialog
+          title={<Tabs />}
+          actions={loginDialogActions}
+          modal={false}
+          open={this.state.loginOpen}
+          onRequestClose={this.closeLogin}
+        />
+        <Dialog
+          title={<Add />}
+          actions={addDocumentDialogActions}
+          modal={false}
+          open={this.state.addDocumentOpen}
+          onRequestClose={this.closeDocument}
+        />
+        <div style={{ height: '64px' }}></div>
+        <div style={{ display: 'flex', justifyContent: 'center', flexFlow: 'wrap', backgroundColor: 'ghostWhite' }}>
+          {nodes}
         </div>
+        <FloatingActionButton
+          onTouchTap={this.openAddDocument}
+          style={style}
+          secondary
+        >
+          <ContentAdd />
+        </FloatingActionButton>
+      </div>
     );
   }
 }
 
-export default MyAppBar;
+GuestAppBar.propTypes = {
+  documents: React.PropTypes.arrayOf(React.PropTypes.object)
+};
+
+export default GuestAppBar;
 

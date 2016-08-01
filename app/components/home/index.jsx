@@ -1,17 +1,13 @@
 import React from 'react';
 
-import GuestContainer from '../../redux/containers/GuestContainer.js';
-import User from './UserHome.jsx';
+import GuestHome from '../../redux/containers/GuestHome.js';
+import UserHome from './UserHome.jsx';
 
 const Home = (props) => {
   return (
-    <div>
-      {
-        props.isAuthenticated
-          ? <User info={props.info} />
-          : <GuestContainer />
-      }
-    </div>
+    props.isAuthenticated
+    ? <UserHome info={props.info} />
+    : <GuestHome />
   );
 };
 

@@ -1,10 +1,9 @@
 import React from 'react';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import jwtDecode from 'jwt-decode';
 
-import store from '../redux/store';
-import { Home } from '../redux/containers';
+import Home from '../redux/containers/Home.jsx';
+import { oauthToken } from '../login';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -13,32 +12,25 @@ const muiTheme = getMuiTheme({
   },
 });
 
-const processOauthToken = (props) => {
-  const token = props.location.query.token;
-  if (token) {
-    localStorage.setItem('token', token);
-    const userInfo = jwtDecode(token);
-    store.dispatch({
-      type: 'LOG_IN_USER_SUCCESS',
-      payload: {
-        userInfo
-      }
-    });
+const Main = (props) => {
+  if (oauthToken(props.location.query.token)) {
     props.history.push('/');
   }
 
-  return null;
-};
-
-const Main = (props) => {
-  processOauthToken(props);
   return (
     <MuiThemeProvider muiTheme={muiTheme}>
-      <div>
-        <Home />
-      </div>
+      <Home />
     </MuiThemeProvider>
   );
+};
+
+Main.propTypes = {
+  location: React.PropTypes.shape({
+    query: React.PropTypes.shape({
+      token: React.PropTypes.string
+    })
+  }),
+  history: React.PropTypes.object
 };
 
 export default Main;
