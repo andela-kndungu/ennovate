@@ -1,6 +1,7 @@
 import express from 'express';
 
 import config from './config';
+import socketServer from './socket-server';
 
 const app = express();
 
@@ -14,11 +15,13 @@ config.passport();
 config.express(app);
 
 // Start taking requests
-app.listen(process.env.PORT, (error) => {
+const webServer = app.listen(process.env.PORT, (error) => {
   if (error) {
     console.log(error);
   } else {
     console.info('Server listening at port', process.env.PORT);
   }
 });
+
+socketServer(webServer);
 

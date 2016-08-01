@@ -18,12 +18,21 @@ export function logInUser(username, password) {
         });
       }
       localStorage.setItem('token', response.body.token);
-      console.log('Something Happening');
       return ({
         type: constants.LOG_IN_USER_SUCCESS,
         payload: {
           token: response.body.token
         }
+      });
+    });
+}
+
+export function fetchDocuments(callback) {
+  request.get('api/documents')
+    .end((error, response) => {
+      return callback({
+        type: 'FETCHED_DOCUMENTS',
+        payload: response.body
       });
     });
 }
