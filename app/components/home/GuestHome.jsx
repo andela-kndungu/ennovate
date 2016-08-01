@@ -5,55 +5,142 @@ import ActionAndroid from 'material-ui/svg-icons/action/input';
 import Dialog from 'material-ui/Dialog';
 import Tabs from '../authentication/Tabs.jsx';
 
-class MyAppBar extends React.Component {
+import Card from '../cards/Test.jsx';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import Add from '../documents/Add.jsx';
+import store from '../../redux/store';
+import socket from '../../socket';
+
+import { fetchDocuments } from '../../redux/actions';
+
+socket.on('newDocument', () => {
+  fetchDocuments((action) => {
+    store.dispatch(action);
+  });
+});
+
+const style = {
+  margin: 0,
+  top: 'auto',
+  right: 10,
+  bottom: 10,
+  left: 'auto',
+  position: 'fixed',
+};
+
+class GuestAppBar extends React.Component {
   constructor() {
     super();
 
-    this.state = { open: false };
+    this.state = {
+      loginOpen: false,
+      addDocumentOpen: false
+    };
 
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    this.openLogin = this.openLogin.bind(this);
+    this.closeLogin = this.closeLogin.bind(this);
+    this.openAddDocument = this.openAddDocument.bind(this);
+    this.closeAddDocument = this.closeAddDocument.bind(this);
   }
 
-  handleOpen() {
-    this.setState({ open: true });
+  componentWillMount() {
+    fetchDocuments((action) => {
+      store.dispatch(action);
+    });
   }
 
-  handleClose() {
-    this.setState({ open: false });
+  openLogin() {
+    this.setState({ loginOpen: true });
+  }
+
+  openAddDocument() {
+    this.setState({ addDocumentOpen: true });
+  }
+
+  closeLogin() {
+    this.setState({ loginOpen: false });
+  }
+
+  closeAddDocument() {
+    this.setState({ addDocumentOpen: false });
   }
 
   render() {
-    const actions = [
+    const loginDialogActions = [
       <FlatButton
         label="Cancel"
         primary
-        onTouchTap={this.handleClose}
+        onTouchTap={this.closeLogin}
       />,
     ];
+
+    const addDocumentDialogActions = [
+      <FlatButton
+        label="Cancel"
+        primary
+        onTouchTap={this.closeAddDocument}
+      />,
+    ];
+
+    const nodes = this.props.documents.map((document) => {
+      return (
+        <Card
+          title={document.title}
+          content={document.content}
+          owner={'document.owner'}
+          date={document.createdAt}
+          key={document.createdAt}
+        />
+      );
+    });
     return (
-      <AppBar
-        title="ennovate"
-        iconElementLeft={<span></span>}
-        iconElementRight={
-          <FlatButton
-            icon={<ActionAndroid />}
-            label="LOGIN"
-            onTouchTap={this.handleOpen}
-          />
-          }
-      >
+      <div>
+        <AppBar
+          title="ennovate"
+          iconElementLeft={<span></span>}
+          iconElementRight={
+            <FlatButton
+              icon={<ActionAndroid />}
+              label="LOGIN"
+              onTouchTap={this.openLogin}
+            />
+            }
+          style={{ position: 'fixed' }}
+        />
         <Dialog
           title={<Tabs />}
-          actions={actions}
+          actions={loginDialogActions}
           modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
+          open={this.state.loginOpen}
+          onRequestClose={this.closeLogin}
         />
-      </AppBar>
+        <Dialog
+          title={<Add />}
+          actions={addDocumentDialogActions}
+          modal={false}
+          open={this.state.addDocumentOpen}
+          onRequestClose={this.closeDocument}
+        />
+        <div style={{ height: '64px' }}></div>
+        <div style={{ display: 'flex', justifyContent: 'center', flexFlow: 'wrap', backgroundColor: 'ghostWhite' }}>
+          {nodes}
+        </div>
+        <FloatingActionButton
+          onTouchTap={this.openAddDocument}
+          style={style}
+          secondary
+        >
+          <ContentAdd />
+        </FloatingActionButton>
+      </div>
     );
   }
 }
 
-export default MyAppBar;
+GuestAppBar.propTypes = {
+  documents: React.PropTypes.arrayOf(React.PropTypes.object)
+};
+
+export default GuestAppBar;
 

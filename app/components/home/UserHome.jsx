@@ -3,7 +3,17 @@ import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import LogOutCard from '../authentication/logOut/LogOutCard.jsx';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
+const style = {
+  margin: 0,
+  top: 'auto',
+  right: 20,
+  bottom: 20,
+  left: 'auto',
+  position: 'fixed',
+};
 class MyAppBar extends React.Component {
   constructor(props) {
     super(props);
@@ -41,17 +51,20 @@ class MyAppBar extends React.Component {
               onTouchTap={this.handleTouchTap}
             />
             }
-        />
-        <Popover
-          open={this.state.open}
-          anchorEl={this.state.anchorEl}
-          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          onRequestClose={this.handleRequestClose}
-        >
-          <LogOutCard info={this.props.info} />
-        </Popover>
-      </div>
+          />
+          <Popover
+            open={this.state.open}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+            onRequestClose={this.handleRequestClose}
+          >
+            <LogOutCard info={this.props.info} />
+          </Popover>
+          <FloatingActionButton style={style} secondary={true}>
+            <ContentAdd />
+          </FloatingActionButton>
+        </div>
     );
   }
 }
