@@ -6,6 +6,9 @@ export default function (server) {
 
   socketServer.on('connection', (socket) => {
     connections.push(socket);
+    console.log('%%%%%%%%%%%%%%%%');
+    console.log('New Connection');
+    console.log('%%%%%%%%%%%%%%%%');
 
     socket.on('newDocument', (data) => {
       connections.forEach(connectedSocket => {
