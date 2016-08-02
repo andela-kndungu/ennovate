@@ -1,6 +1,8 @@
 import io from 'socket.io-client';
-
-const socket = io.connect('/');
+console.log('$$$$$$$$$$$$');
+console.log(location.origin);
+console.log('$$$$$$$$$$$');
+const socket = io.connect(location.origin);
 
 export default socket;
 
