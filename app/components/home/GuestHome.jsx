@@ -13,6 +13,7 @@ import store from '../../redux/store';
 import socket from '../../socket';
 
 import { fetchDocuments } from '../../redux/actions';
+import Toolbar from '../Toolbar/index.jsx';
 
 socket.on('newDocument', () => {
   fetchDocuments((action) => {
@@ -108,6 +109,7 @@ class GuestAppBar extends React.Component {
             }
           style={{ position: 'fixed' }}
         />
+        <h1>Hello</h1>
         <Dialog
           title={<Tabs />}
           actions={loginDialogActions}

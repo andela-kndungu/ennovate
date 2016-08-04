@@ -5,6 +5,9 @@ import Popover from 'material-ui/Popover';
 import LogOutCard from '../authentication/logOut/LogOutCard.jsx';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import Toolbar from '../Toolbar/index.jsx';
+import Drawer from 'material-ui/Drawer';
+import Menu from '../drawer/Menu.jsx';
 
 const style = {
   margin: 0,
@@ -14,14 +17,16 @@ const style = {
   left: 'auto',
   position: 'fixed',
 };
+
 class MyAppBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { open: false };
+    this.state = { open: false, drawerOpen: false };
 
     this.handleTouchTap = this.handleTouchTap.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
+    this.handleHamburgerTouch = this.handleHamburgerTouch.bind(this);
   }
 
   handleTouchTap(event) {
@@ -34,6 +39,10 @@ class MyAppBar extends React.Component {
     });
   }
 
+  handleHamburgerTouch() {
+    this.setState({ drawerOpen: true });
+  }
+
   handleRequestClose() {
     this.setState({
       open: false,
@@ -44,6 +53,7 @@ class MyAppBar extends React.Component {
     return (
       <div>
         <AppBar
+          onLeftIconButtonTouchTap={this.handleHamburgerTouch}
           title="ennovate"
           iconElementRight={
             <FlatButton
@@ -52,6 +62,14 @@ class MyAppBar extends React.Component {
             />
             }
           />
+          <Toolbar />
+          <Drawer
+            open={this.state.drawerOpen}
+            width={256}
+            docked={false}
+            onRequestChange={(open) => this.setState({drawerOpen: false})}>
+            <Menu />
+          </Drawer>
           <Popover
             open={this.state.open}
             anchorEl={this.state.anchorEl}
