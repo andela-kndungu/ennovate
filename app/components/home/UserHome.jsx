@@ -5,9 +5,11 @@ import Popover from 'material-ui/Popover';
 import LogOutCard from '../authentication/logOut/LogOutCard.jsx';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import Toolbar from '../Toolbar/index.jsx';
 import Drawer from 'material-ui/Drawer';
 import Menu from '../drawer/Menu.jsx';
+
+import { fetchCategories } from '../../redux/actions';
+import store from '../../redux/store';
 
 const style = {
   margin: 0,
@@ -27,6 +29,12 @@ class MyAppBar extends React.Component {
     this.handleTouchTap = this.handleTouchTap.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
     this.handleHamburgerTouch = this.handleHamburgerTouch.bind(this);
+  }
+
+  componentWillMount() {
+    fetchCategories((action) => {
+      store.dispatch(action);
+    });
   }
 
   handleTouchTap(event) {
@@ -54,7 +62,6 @@ class MyAppBar extends React.Component {
       <div>
         <AppBar
           onLeftIconButtonTouchTap={this.handleHamburgerTouch}
-          title="ennovate"
           iconElementRight={
             <FlatButton
               label={this.props.info.username}
@@ -62,7 +69,6 @@ class MyAppBar extends React.Component {
             />
             }
           />
-          <Toolbar />
           <Drawer
             open={this.state.drawerOpen}
             width={256}
