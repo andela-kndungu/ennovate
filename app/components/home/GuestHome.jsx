@@ -13,7 +13,6 @@ import store from '../../redux/store';
 import socket from '../../socket';
 
 import { fetchDocuments } from '../../redux/actions';
-import Toolbar from '../Toolbar/index.jsx';
 
 socket.on('newDocument', () => {
   fetchDocuments((action) => {

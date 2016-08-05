@@ -11,6 +11,8 @@ import Menu from '../drawer/Menu.jsx';
 import { fetchCategories, fetchDocuments } from '../../redux/actions';
 import store from '../../redux/store';
 import Card from '../cards/Test.jsx';
+import Add from '../documents/Add.jsx';
+import Dialog from 'material-ui/Dialog';
 
 const style = {
   margin: 0,
@@ -25,11 +27,16 @@ class MyAppBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { open: false, drawerOpen: props.drawerOpen };
+    this.state = {
+      open: false,
+      addDocumentOpen: false
+    };
 
     this.handleTouchTap = this.handleTouchTap.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
-    this.handleHamburgerTouch = this.handleHamburgerTouch.bind(this);
+    this.toggleDrawer = this.toggleDrawer.bind(this);
+    this.openAddDocument = this.openAddDocument.bind(this);
+    this.closeAddDocument = this.closeAddDocument.bind(this);
   }
 
   componentWillMount() {
@@ -54,7 +61,7 @@ class MyAppBar extends React.Component {
     });
   }
 
-  handleHamburgerTouch() {
+  toggleDrawer() {
     store.dispatch({ type: 'CHANGE_CATEGORY' });
   }
 
@@ -62,6 +69,14 @@ class MyAppBar extends React.Component {
     this.setState({
       open: false,
     });
+  }
+
+  openAddDocument() {
+    this.setState({ addDocumentOpen: true });
+  }
+
+  closeAddDocument() {
+    this.setState({ addDocumentOpen: false });
   }
 
   render() {
@@ -76,38 +91,59 @@ class MyAppBar extends React.Component {
         />
       );
     });
+
+    const addDocumentDialogActions = [
+      <FlatButton
+        label="Cancel"
+        primary
+        onTouchTap={this.closeAddDocument}
+      />,
+    ];
+
     return (
       <div>
         <AppBar
-          onLeftIconButtonTouchTap={this.handleHamburgerTouch}
+          onLeftIconButtonTouchTap={this.toggleDrawer}
           iconElementRight={
             <FlatButton
               label={this.props.info.username}
               onTouchTap={this.handleTouchTap}
             />
-            }
-          />
-          <Drawer
-            open={this.props.drawerOpen}
-            width={256}
-            docked={false}
-            onRequestChange={(open) => { store.dispatch({ type: 'CHANGE_CATEGORY' })}}>
-            <Menu />
-          </Drawer>
-          <Popover
-            open={this.state.open}
-            anchorEl={this.state.anchorEl}
-            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-            onRequestClose={this.handleRequestClose}
-          >
-            <LogOutCard info={this.props.info} />
-          </Popover>
-          <div>{nodes}</div>
-          <FloatingActionButton style={style} secondary={true}>
-            <ContentAdd />
-          </FloatingActionButton>
-        </div>
+          }
+        />
+        <Drawer
+          open={this.props.drawerOpen}
+          width={256}
+          docked={false}
+          onRequestChange={this.toggleDrawer}
+        >
+          <Menu />
+        </Drawer>
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+          onRequestClose={this.handleRequestClose}
+        >
+          <LogOutCard info={this.props.info} />
+        </Popover>
+        <div>{nodes}</div>
+        <Dialog
+          title={<Add />}
+          actions={addDocumentDialogActions}
+          modal={false}
+          open={this.state.addDocumentOpen}
+          onRequestClose={this.closeDocument}
+        />
+        <FloatingActionButton
+          onTouchTap={this.openAddDocument}
+          style={style}
+          secondary
+        >
+          <ContentAdd />
+        </FloatingActionButton>
+      </div>
     );
   }
 }

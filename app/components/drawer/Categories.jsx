@@ -12,11 +12,6 @@ const mapStateToProps = (state) => {
   });
 };
 
-const items = [];
-for (let i = 0; i < 100; i++) {
-  items.push(<MenuItem value={i} key={i} primaryText={`A mennu item ${i}`} />);
-}
-
 class Categories extends React.Component {
 
   constructor(props) {
@@ -27,16 +22,19 @@ class Categories extends React.Component {
   }
 
   handleChange(event, index) {
+    console.log(this.props.documents);
     const filtered = this.props.documents.filter((document) => {
-      return document.category === this.props.categories[index].title;
+      return document.category === 'education';
     });
 
     store.dispatch({ type: 'FILTER_DOCUMENTS', payload: filtered });
     store.dispatch({ type: 'CHANGE_CATEGORY' });
+    this.setState({ value: index });
   }
 
   render() {
-    const categories = this.props.categories.map((category, index) => {
+    const categories = this.props.categories.toJS().map((category, index) => {
+      console.log(this.props.categories.toJS());
       return (
         <MenuItem
           value={index}

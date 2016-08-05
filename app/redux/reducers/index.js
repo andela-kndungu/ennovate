@@ -6,7 +6,7 @@ const defaultState = fromJS({
     token: null
   },
   documents: [],
-  categories: [{ title: 'Category' }],
+  categories: [{ title: 'general' }],
   filteredDocuments: [],
   currentCategory: 'general',
   drawerOpen: false
@@ -67,9 +67,8 @@ export default function (state = defaultState, action) {
     case 'FETCHED_CATEGORIES':
       return state.update('categories',
         [],
-        () => {
-          action.payload.unshift({ title: 'Category' });
-          return action.payload;
+        (current) => {
+          return current.concat(fromJS(action.payload));
         });
     case 'FILTER_DOCUMENTS':
       return state.update('filteredDocuments',
