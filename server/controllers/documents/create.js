@@ -1,5 +1,4 @@
 import Documents from '../../models/documents.js';
-import Tags from '../../models/tags.js';
 
 import parseError from '../parseError.js';
 
@@ -11,21 +10,8 @@ const create = (req, res) => {
   document.owner = req.body.owner;
   document.title = req.body.title;
   document.content = req.body.content;
-  document.tags = req.body.tags || [];
+  document.category = req.body.category;
   document.accessibleBy = req.body.accessibleBy || ['user'];
-
-  // Create new tags if necessary
-  document.tags.forEach((tag) => {
-    Tags.findOne({
-      title: tag
-    }, (error, found) => {
-      if (!found) {
-        const newTag = new Tags();
-        newTag.title = tag;
-        newTag.save();
-      }
-    });
-  });
 
   // Save the new document parsing the error if request is invalid
   document.save((saveError) => {

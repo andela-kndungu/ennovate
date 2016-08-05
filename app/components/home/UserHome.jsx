@@ -11,6 +11,7 @@ import Menu from '../drawer/Menu.jsx';
 import { fetchCategories, fetchDocuments } from '../../redux/actions';
 import store from '../../redux/store';
 import Card from '../cards/Test.jsx';
+
 const style = {
   margin: 0,
   top: 'auto',
@@ -24,7 +25,7 @@ class MyAppBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { open: false, drawerOpen: false };
+    this.state = { open: false, drawerOpen: props.drawerOpen };
 
     this.handleTouchTap = this.handleTouchTap.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
@@ -54,13 +55,7 @@ class MyAppBar extends React.Component {
   }
 
   handleHamburgerTouch() {
-    const filtered = this.props.documents.filter((document) => {
-      return document.title === 'Uhoro';
-    });
-    console.log(this.props.documents)
-
-    store.dispatch({ type: 'FILTER_DOCUMENTS', payload: filtered });
-    this.setState({ drawerOpen: true });
+    store.dispatch({ type: 'CHANGE_CATEGORY' });
   }
 
   handleRequestClose() {
@@ -93,10 +88,10 @@ class MyAppBar extends React.Component {
             }
           />
           <Drawer
-            open={this.state.drawerOpen}
+            open={this.props.drawerOpen}
             width={256}
             docked={false}
-            onRequestChange={(open) => this.setState({drawerOpen: false})}>
+            onRequestChange={(open) => { store.dispatch({ type: 'CHANGE_CATEGORY' })}}>
             <Menu />
           </Drawer>
           <Popover

@@ -3,9 +3,12 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
 
+import store from '../../redux/store';
+
 const mapStateToProps = (state) => {
   return ({
-    categories: state.app.get('categories')
+    categories: state.app.get('categories'),
+    documents: state.app.get('documents')
   });
 };
 
@@ -23,7 +26,14 @@ class Categories extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event, index, value) { this.setState({ value }); }
+  handleChange(event, index) {
+    const filtered = this.props.documents.filter((document) => {
+      return document.category === this.props.categories[index].title;
+    });
+
+    store.dispatch({ type: 'FILTER_DOCUMENTS', payload: filtered });
+    store.dispatch({ type: 'CHANGE_CATEGORY' });
+  }
 
   render() {
     const categories = this.props.categories.map((category, index) => {
@@ -44,7 +54,8 @@ class Categories extends React.Component {
 }
 
 Categories.propTypes = {
-  categories: React.PropTypes.array
+  categories: React.PropTypes.array,
+  documents: React.PropTypes.array
 };
 
 export default connect(mapStateToProps)(Categories);

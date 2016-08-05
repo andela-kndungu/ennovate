@@ -8,6 +8,8 @@ const defaultState = fromJS({
   documents: [],
   categories: [{ title: 'Category' }],
   filteredDocuments: [],
+  currentCategory: 'general',
+  drawerOpen: false
 });
 
 export default function (state = defaultState, action) {
@@ -74,6 +76,12 @@ export default function (state = defaultState, action) {
         [],
         () => {
           return action.payload;
+        });
+    case 'CHANGE_CATEGORY':
+      return state.update('drawerOpen',
+        [],
+        (current) => {
+          return !current;
         });
     case 'LOG_OUT_USER':
       stateDuplicate = state.updateIn(
