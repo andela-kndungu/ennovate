@@ -6,7 +6,8 @@ const defaultState = fromJS({
     token: null
   },
   documents: [],
-  categories: [{ title: 'Category' }]
+  categories: [{ title: 'Category' }],
+  filteredDocuments: [],
 });
 
 export default function (state = defaultState, action) {
@@ -47,13 +48,31 @@ export default function (state = defaultState, action) {
 
       return stateDuplicate;
     case 'FETCHED_DOCUMENTS':
-      return state.update('documents', [], () => { return action.payload; });
+      stateDuplicate = state.update(
+        'filteredDocuments',
+        [],
+        () => {
+          return action.payload;
+        });
+
+      return stateDuplicate.update(
+        'documents',
+        [],
+        () => {
+          return action.payload;
+        }
+      );
     case 'FETCHED_CATEGORIES':
       return state.update('categories',
         [],
         () => {
           action.payload.unshift({ title: 'Category' });
-          console.log(action.payload);
+          return action.payload;
+        });
+    case 'FILTER_DOCUMENTS':
+      return state.update('filteredDocuments',
+        [],
+        () => {
           return action.payload;
         });
     case 'LOG_OUT_USER':

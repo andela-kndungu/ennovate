@@ -8,9 +8,9 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import Drawer from 'material-ui/Drawer';
 import Menu from '../drawer/Menu.jsx';
 
-import { fetchCategories } from '../../redux/actions';
+import { fetchCategories, fetchDocuments } from '../../redux/actions';
 import store from '../../redux/store';
-
+import Card from '../cards/Test.jsx';
 const style = {
   margin: 0,
   top: 'auto',
@@ -37,6 +37,12 @@ class MyAppBar extends React.Component {
     });
   }
 
+  componentDidMount() {
+    fetchDocuments((action) => {
+      store.dispatch(action);
+    });
+  }
+
   handleTouchTap(event) {
     // This prevents ghost click.
     event.preventDefault();
@@ -48,6 +54,12 @@ class MyAppBar extends React.Component {
   }
 
   handleHamburgerTouch() {
+    const filtered = this.props.documents.filter((document) => {
+      return document.title === 'Uhoro';
+    });
+    console.log(this.props.documents)
+
+    store.dispatch({ type: 'FILTER_DOCUMENTS', payload: filtered });
     this.setState({ drawerOpen: true });
   }
 
@@ -58,6 +70,17 @@ class MyAppBar extends React.Component {
   }
 
   render() {
+    const nodes = this.props.filteredDocuments.map((document) => {
+      return (
+        <Card
+          title={document.title}
+          content={document.content}
+          owner={'document.owner'}
+          date={document.createdAt}
+          key={document.createdAt}
+        />
+      );
+    });
     return (
       <div>
         <AppBar
@@ -85,6 +108,7 @@ class MyAppBar extends React.Component {
           >
             <LogOutCard info={this.props.info} />
           </Popover>
+          <div>{nodes}</div>
           <FloatingActionButton style={style} secondary={true}>
             <ContentAdd />
           </FloatingActionButton>
