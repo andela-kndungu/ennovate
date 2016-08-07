@@ -79,12 +79,13 @@ class MyAppBar extends React.Component {
   }
 
   render() {
+    console.log(this.props.filteredDocuments)
     const nodes = this.props.filteredDocuments.map((document) => {
       return (
         <Card
           title={document.title}
           content={document.content}
-          owner={'document.owner'}
+          owner={document.owner}
           date={document.createdAt}
           key={document.createdAt}
         />

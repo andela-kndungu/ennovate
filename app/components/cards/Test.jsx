@@ -4,16 +4,18 @@ import FlatButton from 'material-ui/FlatButton';
 import moment from 'moment';
 
 const CardExampleWithAvatar = (props) => {
+  console.log(props.owner);
+  const user = JSON.parse(props.owner);
   return (<Card style={{ width: '300px', margin: '20px', float: 'left' }}>
     <CardHeader
       style={{ fontSize: '15px' }}
-      title="kinuthia"
+      title={user.username || 'kinuthia'}
       subtitle={
         <div style={{ fontSize: '11px' }}>
           <div>{moment(props.date).format('Do MMMM YYYY')}</div>
           <div>{moment(props.date).format('h:mm:ss a')}</div>
       </div>}
-      avatar="http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png"
+      avatar={user.photo || "http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png"}
       actAsExpander
     />
     <CardTitle title={props.title} actAsExpander />

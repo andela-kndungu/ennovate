@@ -6,7 +6,7 @@ import request from 'superagent';
 import MenuItem from 'material-ui/MenuItem';
 import store from '../../redux/store';
 import socket from '../../socket';
-
+let user = '';
 const fields = [
   'title',
   'content'
@@ -49,6 +49,8 @@ const validate = (values) => {
 
 const SignUpForm = (props) => {
   let categories = props.categories;
+  user = JSON.stringify(props.user);
+  console.log(props);
   categories = categories.map((categoryObject) => {
     return (
       <MenuItem
@@ -108,7 +110,7 @@ const signUpUser = (values) => {
   request
     .post('api/documents')
     .send({
-      owner: 'Placeholder',
+      owner: user,
       title: values.title,
       content: values.content,
       category: values.category
