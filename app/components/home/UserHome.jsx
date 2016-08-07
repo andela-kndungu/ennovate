@@ -7,13 +7,12 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Drawer from 'material-ui/Drawer';
 import Menu from '../drawer/Menu.jsx';
-
 import { fetchCategories, fetchDocuments } from '../../redux/actions';
 import store from '../../redux/store';
 import Card from '../cards/Test.jsx';
 import Add from '../documents/Add.jsx';
 import Dialog from 'material-ui/Dialog';
-
+import SearchBar from '../SearchBar/index.jsx';
 const style = {
   margin: 0,
   top: 'auto',
@@ -104,7 +103,14 @@ class MyAppBar extends React.Component {
       <div>
         <AppBar
           onLeftIconButtonTouchTap={this.toggleDrawer}
+          title={<SearchBar />}
           iconElementRight={
+            <FlatButton
+              label={this.props.info.username}
+              onTouchTap={this.handleTouchTap}
+            />
+          }
+          iconElementCenter={
             <FlatButton
               label={this.props.info.username}
               onTouchTap={this.handleTouchTap}
