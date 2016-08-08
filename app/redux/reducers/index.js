@@ -5,7 +5,7 @@ const defaultState = fromJS({
     isAuthenticated: false,
     token: null
   },
-  documents: [],
+  documents: fromJS([]),
   categories: [{ title: 'general' }],
   filteredDocuments: [],
   currentCategory: 'general',
@@ -54,14 +54,14 @@ export default function (state = defaultState, action) {
         'filteredDocuments',
         [],
         () => {
-          return action.payload;
+          return fromJS(action.payload);
         });
 
       return stateDuplicate.update(
         'documents',
         [],
         () => {
-          return action.payload;
+          return fromJS(action.payload);
         }
       );
     case 'FETCHED_CATEGORIES':

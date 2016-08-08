@@ -1,10 +1,11 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
-import ActionAndroid from 'material-ui/svg-icons/action/input';
+import LogInIcon from 'material-ui/svg-icons/action/input';
 import Dialog from 'material-ui/Dialog';
-import Tabs from '../authentication/Tabs.jsx';
+import LogInTabs from '../authentication/Tabs.jsx';
 
+import { List } from 'immutable';
 import Card from '../cards/Test.jsx';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -34,12 +35,12 @@ class GuestAppBar extends React.Component {
     super();
 
     this.state = {
-      loginOpen: false,
+      logInOpen: false,
       addDocumentOpen: false
     };
 
-    this.openLogin = this.openLogin.bind(this);
-    this.closeLogin = this.closeLogin.bind(this);
+    this.openLogIn = this.openLogIn.bind(this);
+    this.closeLogIn = this.closeLogIn.bind(this);
     this.openAddDocument = this.openAddDocument.bind(this);
     this.closeAddDocument = this.closeAddDocument.bind(this);
   }
@@ -50,16 +51,16 @@ class GuestAppBar extends React.Component {
     });
   }
 
-  openLogin() {
-    this.setState({ loginOpen: true });
+  openLogIn() {
+    this.setState({ logInOpen: true });
   }
 
   openAddDocument() {
     this.setState({ addDocumentOpen: true });
   }
 
-  closeLogin() {
-    this.setState({ loginOpen: false });
+  closeLogIn() {
+    this.setState({ logInOpen: false });
   }
 
   closeAddDocument() {
@@ -67,11 +68,11 @@ class GuestAppBar extends React.Component {
   }
 
   render() {
-    const loginDialogActions = [
+    const logInDialogActions = [
       <FlatButton
-        label="Cancel"
+        label="CANCEL"
         primary
-        onTouchTap={this.closeLogin}
+        onTouchTap={this.closeLogIn}
       />,
     ];
 
@@ -101,20 +102,19 @@ class GuestAppBar extends React.Component {
           iconElementLeft={<span></span>}
           iconElementRight={
             <FlatButton
-              icon={<ActionAndroid />}
+              icon={<LogInIcon />}
               label="LOGIN"
-              onTouchTap={this.openLogin}
+              onTouchTap={this.openLogIn}
             />
-            }
+          }
           style={{ position: 'fixed' }}
         />
-        <h1>Hello</h1>
         <Dialog
-          title={<Tabs />}
-          actions={loginDialogActions}
+          title={<LogInTabs />}
+          actions={logInDialogActions}
           modal={false}
-          open={this.state.loginOpen}
-          onRequestClose={this.closeLogin}
+          open={this.state.logInOpen}
+          onRequestClose={this.closeLogIn}
         />
         <Dialog
           title={<Add />}
@@ -140,7 +140,7 @@ class GuestAppBar extends React.Component {
 }
 
 GuestAppBar.propTypes = {
-  documents: React.PropTypes.arrayOf(React.PropTypes.object)
+  documents: React.PropTypes.instanceOf(List)
 };
 
 export default GuestAppBar;

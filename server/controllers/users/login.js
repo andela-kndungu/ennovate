@@ -35,5 +35,6 @@ const local = (req, res) => {
   // Return token and success message in JSON
   return res.json({ token, userInfo });
 };
+
 export default { social, local };
 
