@@ -1,12 +1,15 @@
 import { fromJS } from 'immutable';
-import request from 'superagent';
 
 const defaultState = fromJS({
   auth: {
     isAuthenticated: false,
     token: null
   },
-  documents: []
+  documents: [],
+  categories: [{ title: 'general' }],
+  filteredDocuments: [],
+  currentCategory: 'general',
+  drawerOpen: false
 });
 
 export default function (state = defaultState, action) {
@@ -47,7 +50,38 @@ export default function (state = defaultState, action) {
 
       return stateDuplicate;
     case 'FETCHED_DOCUMENTS':
-      return state.update('documents', [], () => { return action.payload; });
+      stateDuplicate = state.update(
+        'filteredDocuments',
+        [],
+        () => {
+          return action.payload;
+        });
+
+      return stateDuplicate.update(
+        'documents',
+        [],
+        () => {
+          return action.payload;
+        }
+      );
+    case 'FETCHED_CATEGORIES':
+      return state.update('categories',
+        [],
+        (current) => {
+          return current.concat(fromJS(action.payload));
+        });
+    case 'FILTER_DOCUMENTS':
+      return state.update('filteredDocuments',
+        [],
+        () => {
+          return action.payload;
+        });
+    case 'CHANGE_CATEGORY':
+      return state.update('drawerOpen',
+        [],
+        (current) => {
+          return !current;
+        });
     case 'LOG_OUT_USER':
       stateDuplicate = state.updateIn(
         ['auth', 'isAuthenticated'],

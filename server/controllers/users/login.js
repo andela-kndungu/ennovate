@@ -12,6 +12,8 @@ const social = (req, res) => {
     expiresIn: '90 days',
   });
 
+  req.user = userInfo;
+
   // Return token and success message in JSON
   return res.redirect(`/?token=${token}`);
 };
@@ -27,6 +29,8 @@ const local = (req, res) => {
   const token = jwt.sign(userInfo, process.env.SECRET_KEY, {
     expiresIn: '90 days',
   });
+
+  req.user = userInfo;
 
   // Return token and success message in JSON
   return res.json({ token, userInfo });
