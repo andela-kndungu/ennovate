@@ -108,6 +108,7 @@ class GuestAppBar extends React.Component {
             }
           style={{ position: 'fixed' }}
         />
+        <h1>Hello</h1>
         <Dialog
           title={<Tabs />}
           actions={loginDialogActions}

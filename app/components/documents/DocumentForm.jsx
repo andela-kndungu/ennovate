@@ -1,12 +1,12 @@
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import { Field, reduxForm } from 'redux-form';
-import { TextField } from 'redux-form-material-ui';
+import { TextField, SelectField } from 'redux-form-material-ui';
 import request from 'superagent';
-
+import MenuItem from 'material-ui/MenuItem';
 import store from '../../redux/store';
 import socket from '../../socket';
-
+let user = '';
 const fields = [
   'title',
   'content'
@@ -48,34 +48,57 @@ const validate = (values) => {
 };
 
 const SignUpForm = (props) => {
+  let categories = props.categories;
+  user = JSON.stringify(props.user);
+  console.log(props);
+  categories = categories.map((categoryObject) => {
+    return (
+      <MenuItem
+        value={categoryObject.title}
+        primaryText={categoryObject.title}
+      />
+    );
+  });
   return (
     <div style={divStyle}>
       <div style={fieldStyle}>
-        <Field
-          style={{ width: '100%' }}
-          name="title"
-          component={TextField}
-          hintText="Title"
-          floatingLabelText="Title"
-        />
-      </div>
-      <div style={fieldStyle}>
-        <Field
-          style={{ width: '100%' }}
-          name="content"
-          component={TextField}
-          hintText="Content"
-          floatingLabelText="Content"
-          multiLine
-          rowsMax={4}
-        />
-      </div>
-      <FlatButton
-        style={buttonStyle}
-        label="Add"
-        onClick={props.handleSubmit}
+      <Field
+        name="category"
+        component={SelectField}
+        hintText="Category"
+        floatingLabelText="Category"
+      >
+        {
+          categories
+        }
+      </Field>
+    </div>
+    <div style={fieldStyle}>
+      <Field
+        style={{ width: '100%' }}
+        name="title"
+        component={TextField}
+        hintText="Title"
+        floatingLabelText="Title"
       />
     </div>
+    <div style={fieldStyle}>
+      <Field
+        style={{ width: '100%' }}
+        name="content"
+        component={TextField}
+        hintText="Content"
+        floatingLabelText="Content"
+        multiLine
+        rowsMax={4}
+      />
+    </div>
+    <FlatButton
+      style={buttonStyle}
+      label="Add"
+      onClick={props.handleSubmit}
+    />
+  </div>
   );
 };
 
@@ -84,13 +107,13 @@ SignUpForm.propTypes = {
 };
 
 const signUpUser = (values) => {
-  console.log(values);
   request
     .post('api/documents')
     .send({
-      owner: 'Placeholder',
+      owner: user,
       title: values.title,
-      content: values.content
+      content: values.content,
+      category: values.category
     })
     .end((error, response) => {
       if (error) {
@@ -104,6 +127,10 @@ const signUpUser = (values) => {
       socket.emit('newDocument', response.body);
       console.log(response.body);
     });
+};
+
+SignUpForm.propTypes = {
+  categories: React.PropTypes.array
 };
 
 export default reduxForm({

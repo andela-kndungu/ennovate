@@ -37,3 +37,12 @@ export function fetchDocuments(callback) {
     });
 }
 
+export function fetchCategories(callback) {
+  request.get('api/categories')
+    .end((error, response) => {
+      return callback({
+        type: 'FETCHED_CATEGORIES',
+        payload: response.body
+      });
+    });
+}

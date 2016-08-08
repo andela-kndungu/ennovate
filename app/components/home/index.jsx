@@ -1,7 +1,7 @@
 import React from 'react';
 
 import GuestHome from '../../redux/containers/GuestHome.js';
-import UserHome from './UserHome.jsx';
+import UserHome from '../../redux/containers/UserHome.jsx';
 
 const Home = (props) => {
   return (

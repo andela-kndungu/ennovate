@@ -17,8 +17,9 @@ const DocumentsSchema = new Schema({
     required: [true, 'Some content must be provided']
   },
 
-  tags: {
-    type: Array
+  category: {
+    type: String,
+    default: 'general'
   },
 
   accessibleBy: {
