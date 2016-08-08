@@ -34,9 +34,21 @@ class SignUpForm extends React.Component {
       lastName: '',
       email: '',
       password: '',
-      formReady: false,
+      disableButton: true,
       errorText: ''
     };
+
+    this.formReady = this.formReady.bind(this);
+  }
+
+  formReady() {
+    const ready =
+      this.isAlphanumeric(this.state.username).length < 1 &&
+      this.isAlphanumeric(this.state.firstName).length < 1 &&
+      this.isAlphanumeric(this.state.lastName).length < 1 &&
+      this.isEmail(this.state.email).length < 1 &&
+      this.state.password.length > 0;
+    this.setState({ disableButton: !ready });
   }
 
   isAlphanumeric(value) {
@@ -88,6 +100,7 @@ class SignUpForm extends React.Component {
             floatingLabelText="Username"
             value={this.state.username}
             errorText={this.validate('username')}
+            onBlur={this.formReady}
             onChange={
               (event) => {
                 this.setState({ username: event.target.value });
@@ -101,6 +114,7 @@ class SignUpForm extends React.Component {
             hintText="First Name"
             floatingLabelText="First Name"
             errorText={this.validate('firstName')}
+            onBlur={this.formReady}
             onChange={
               (event) => {
                 this.setState({ firstName: event.target.value });
@@ -112,6 +126,7 @@ class SignUpForm extends React.Component {
             hintText="Last Name"
             floatingLabelText="Last Name"
             errorText={this.validate('lastName')}
+            onBlur={this.formReady}
             onChange={
               (event) => {
                 this.setState({ lastName: event.target.value });
@@ -125,6 +140,7 @@ class SignUpForm extends React.Component {
             hintText="Email"
             floatingLabelText="Email"
             errorText={this.validate('email')}
+            onBlur={this.formReady}
             onChange={
               (event) => {
                 this.setState({ email: event.target.value });
@@ -139,6 +155,7 @@ class SignUpForm extends React.Component {
             floatingLabelText="Password"
             type="password"
             errorText={this.validate('password')}
+            onBlur={this.formReady}
             onChange={
               (event) => {
                 this.setState({ password: event.target.value });
@@ -149,7 +166,7 @@ class SignUpForm extends React.Component {
         <FlatButton
           style={buttonStyle}
           label="Sign Up"
-          disabled={!this.state.formReady}
+          disabled={this.state.disableButton}
         />
         <Snackbar
           open={this.state.snackBarOpen}
