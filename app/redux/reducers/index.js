@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 import { fromJS } from 'immutable';
 
 const defaultState = fromJS({
@@ -5,7 +6,7 @@ const defaultState = fromJS({
     isAuthenticated: false,
     token: null
   },
-  documents: [],
+  documents: fromJS([]),
   categories: [{ title: 'general' }],
   filteredDocuments: [],
   currentCategory: 'general',
@@ -15,18 +16,9 @@ const defaultState = fromJS({
 export default function (state = defaultState, action) {
   let stateDuplicate = state;
   switch (action.type) {
-    case 'ADD_COUNTER':
-      return state.update('times', 1, (value) => {
-        return value + action.payload;
-      });
-    case 'REMOVE_COUNTER':
-      return state.update('times', 1, (value) => {
-        return value - action.payload;
-      });
     case 'LOG_IN_USER_SUCCESS':
       stateDuplicate = state.updateIn(
         ['auth', 'isAuthenticated'],
-        false,
         () => {
           return true;
         }
@@ -34,34 +26,19 @@ export default function (state = defaultState, action) {
 
       stateDuplicate = stateDuplicate.updateIn(
         ['auth', 'info'],
-        '',
         () => {
-          return action.payload.userInfo;
-        }
-      );
-
-      stateDuplicate = stateDuplicate.updateIn(
-        ['auth', 'token'],
-        null,
-        () => {
-          return action.payload.token;
+          const userInfo = jwtDecode(action.payload.token);
+          return fromJS(userInfo);
         }
       );
 
       return stateDuplicate;
     case 'FETCHED_DOCUMENTS':
-      stateDuplicate = state.update(
-        'filteredDocuments',
-        [],
-        () => {
-          return action.payload;
-        });
-
       return stateDuplicate.update(
         'documents',
         [],
         () => {
-          return action.payload;
+          return fromJS(action.payload);
         }
       );
     case 'FETCHED_CATEGORIES':

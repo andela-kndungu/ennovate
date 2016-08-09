@@ -1,4 +1,5 @@
 import React from 'react';
+import { Map } from 'immutable';
 
 import Avatar from './Avatar.jsx';
 import Info from './Info.jsx';
@@ -11,19 +12,26 @@ const container = {
   margin: '10px',
 };
 
-const LogOutCard = (props) => (
-  <div style={container}>
-    <div>
-      <Avatar photo={props.info.photo} />
-      <Info name={props.info.name} email={props.info.email} />
+const LogOutCard = (props) => {
+  const first = props.info.getIn(['name', 'first']);
+  const last = props.info.getIn(['name', 'last']);
+  return (
+    <div style={container}>
+      <div>
+        <Avatar photo={props.info.get('photo')} />
+        <Info
+          name={{ first, last }}
+          email={props.info.get('email')}
+        />
+      </div>
+      <Divider />
+      <Button />
     </div>
-    <Divider />
-    <Button />
-  </div>
-);
+  );
+};
 
 LogOutCard.propTypes = {
-  info: React.PropTypes.object
+  info: React.PropTypes.instanceOf(Map)
 };
 
 export default LogOutCard;
