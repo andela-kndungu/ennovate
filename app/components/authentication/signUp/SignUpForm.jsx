@@ -39,6 +39,7 @@ class SignUpForm extends React.Component {
     };
 
     this.formReady = this.formReady.bind(this);
+    this.signUpUser = this.signUpUser.bind(this);
   }
 
   formReady() {
@@ -89,6 +90,37 @@ class SignUpForm extends React.Component {
         return '';
     }
   }
+  signUpUser() {
+    request
+      .post('api/users')
+      .send({
+        username: this.state.username,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        email: this.state.email,
+        password: this.state.password
+      })
+      .end((error, response) => {
+        if (response.statusCode === 409) {
+          return this.setState({
+            snackBarMessage: 'Username or email already exists',
+            snackBarOpen: true,
+            username: '',
+            email: ''
+          });
+        }
+
+        return this.setState({
+          snackBarMessage: 'Account created, Log in to continue.',
+          snackBarOpen: true,
+          username: '',
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: ''
+        });
+      });
+  }
 
   render() {
     return (
@@ -114,6 +146,7 @@ class SignUpForm extends React.Component {
             hintText="First Name"
             floatingLabelText="First Name"
             errorText={this.validate('firstName')}
+            value={this.state.firstName}
             onBlur={this.formReady}
             onChange={
               (event) => {
@@ -126,6 +159,7 @@ class SignUpForm extends React.Component {
             hintText="Last Name"
             floatingLabelText="Last Name"
             errorText={this.validate('lastName')}
+            value={this.state.lastName}
             onBlur={this.formReady}
             onChange={
               (event) => {
@@ -140,6 +174,7 @@ class SignUpForm extends React.Component {
             hintText="Email"
             floatingLabelText="Email"
             errorText={this.validate('email')}
+            value={this.state.email}
             onBlur={this.formReady}
             onChange={
               (event) => {
@@ -155,6 +190,7 @@ class SignUpForm extends React.Component {
             floatingLabelText="Password"
             type="password"
             errorText={this.validate('password')}
+            value={this.state.password}
             onBlur={this.formReady}
             onChange={
               (event) => {
@@ -167,6 +203,7 @@ class SignUpForm extends React.Component {
           style={buttonStyle}
           label="Sign Up"
           disabled={this.state.disableButton}
+          onClick={this.signUpUser}
         />
         <Snackbar
           open={this.state.snackBarOpen}
