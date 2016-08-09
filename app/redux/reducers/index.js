@@ -34,13 +34,6 @@ export default function (state = defaultState, action) {
 
       return stateDuplicate;
     case 'FETCHED_DOCUMENTS':
-      stateDuplicate = state.update(
-        'filteredDocuments',
-        [],
-        () => {
-          return fromJS(action.payload);
-        });
-
       return stateDuplicate.update(
         'documents',
         [],

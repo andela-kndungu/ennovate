@@ -7,8 +7,6 @@ import LogInTabs from '../authentication/Tabs.jsx';
 
 import { List } from 'immutable';
 import Card from '../cards/Test.jsx';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
 import Add from '../documents/Add.jsx';
 import store from '../../redux/store';
 import socket from '../../socket';
@@ -20,15 +18,6 @@ socket.on('newDocument', () => {
     store.dispatch(action);
   });
 });
-
-const style = {
-  margin: 0,
-  top: 'auto',
-  right: 10,
-  bottom: 10,
-  left: 'auto',
-  position: 'fixed',
-};
 
 class GuestAppBar extends React.Component {
   constructor() {
@@ -45,7 +34,7 @@ class GuestAppBar extends React.Component {
     this.closeAddDocument = this.closeAddDocument.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     fetchDocuments((action) => {
       store.dispatch(action);
     });
@@ -84,14 +73,15 @@ class GuestAppBar extends React.Component {
       />,
     ];
 
-    const nodes = this.props.documents.map((document) => {
+    const nodes = this.props.documents.toJS().map((document) => {
       return (
         <Card
+          owner={document.owner}
           title={document.title}
           content={document.content}
-          owner={'document.owner'}
           date={document.createdAt}
           key={document.createdAt}
+          disableEdit
         />
       );
     });
@@ -124,16 +114,9 @@ class GuestAppBar extends React.Component {
           onRequestClose={this.closeDocument}
         />
         <div style={{ height: '64px' }}></div>
-        <div style={{ display: 'flex', justifyContent: 'center', flexFlow: 'wrap', backgroundColor: 'ghostWhite' }}>
+        <div>
           {nodes}
         </div>
-        <FloatingActionButton
-          onTouchTap={this.openAddDocument}
-          style={style}
-          secondary
-        >
-          <ContentAdd />
-        </FloatingActionButton>
       </div>
     );
   }

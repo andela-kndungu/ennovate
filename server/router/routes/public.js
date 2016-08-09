@@ -12,18 +12,10 @@ router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../../../public/index.html'));
 });
 
-// Return the home page (GET /)
-router.get('/xyz', (req, res) => {
-  res.json({ a: 'b', c: 'd' });
-});
+router.get('/api/documents', DocumentsController.find.all);
+
 // Create a user (POST /users)
 router.post('/api/users', UsersController.create);
-
-// Create a document (POST /users)
-router.post('/api/documents', DocumentsController.create);
-
-// Create a document (POST /users)
-router.get('/api/documents', DocumentsController.find.all);
 
 // Log in a user (POST /users/login)
 router.post('/api/users/login', passport.authenticate('local', {
@@ -48,5 +40,5 @@ router.get('/api/users/login/auth/github/callback',
     session: false
   }), UsersController.logIn.social);
 
-module.exports = router;
+export default router;
 

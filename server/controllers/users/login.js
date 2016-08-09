@@ -6,7 +6,8 @@ const social = (req, res) => {
     username: req.user.username || 'jane',
     photo: req.user.photo,
     email: req.user.email,
-    roles: req.user.roles
+    roles: req.user.roles,
+    _id: req.user._id
   };
 
   const token = jwt.sign(userInfo, process.env.SECRET_KEY, {
@@ -25,7 +26,8 @@ const local = (req, res) => {
     username: req.user.username,
     photo: req.user.photo,
     email: req.user.email,
-    roles: req.user.roles
+    roles: req.user.roles,
+    _id: req.user._id
   };
 
   const token = jwt.sign(userInfo, process.env.SECRET_KEY, {

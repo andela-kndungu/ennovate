@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 
 const DocumentsSchema = new Schema({
   owner: {
-    type: String,
+    type: Schema.ObjectId,
+    ref: 'Users'
   },
 
   title: {
