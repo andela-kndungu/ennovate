@@ -35,16 +35,21 @@ const handleResponse = (token, refreshToken, profile, done) => {
         newUser.email = profile.emails[0].value; // pull the first email
         newUser.photo = `${profile.photos[0].value}0`;
 
-        const randomUserNameNumber = Math.floor(Math.random() * 1000);
-        newUser.username = `${firstName}_ ${randomUserNameNumber}`;
+        Users.findOne({ username: firstName.toLowerCase() }, (e, u) => {
+          if (u) {
+            const randomUserNameNumber = Math.floor(Math.random() * 1000);
+            newUser.username = `${firstName}_ ${randomUserNameNumber}`;
+          } else {
+            newUser.username = firstName.toLowerCase();
+            // save the user
+            newUser.save((er) => {
+              if (er) {
+                throw err;
+              }
 
-        // save the user
-        newUser.save((er) => {
-          if (er) {
-            throw err;
+              return done(null, newUser);
+            });
           }
-
-          return done(null, newUser);
         });
       }
       return null;
