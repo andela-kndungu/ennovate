@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Andela's JavaScript curriculum's fourth checkpoint",
   "main": "server/index.js",
+  "engine": "node 6.2.2",
   "scripts": {
     "babel": "babel --presets es2015 --ignore node_modules",
     "babel-node": "babel-node --presets es2015 --ignore node_modules",
