@@ -1,4 +1,5 @@
 import React from 'react';
+import { Map } from 'immutable';
 
 import GuestHome from '../../redux/containers/GuestHome.js';
 import UserHome from '../../redux/containers/UserHome.jsx';
@@ -13,7 +14,7 @@ const Home = (props) => {
 
 Home.propTypes = {
   isAuthenticated: React.PropTypes.bool.isRequired,
-  info: React.PropTypes.object
+  info: React.PropTypes.instanceOf(Map)
 };
 
 export default Home;

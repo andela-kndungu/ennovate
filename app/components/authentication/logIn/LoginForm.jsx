@@ -64,7 +64,6 @@ class LogInForm extends React.Component {
             type: 'LOG_IN_USER_SUCCESS',
             payload: {
               token: response.body.token,
-              userInfo: response.body.userInfo
             }
           });
         }

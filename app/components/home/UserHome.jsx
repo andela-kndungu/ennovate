@@ -79,7 +79,6 @@ class MyAppBar extends React.Component {
   }
 
   render() {
-    console.log(this.props.filteredDocuments)
     const nodes = this.props.filteredDocuments.map((document) => {
       return (
         <Card
@@ -107,7 +106,7 @@ class MyAppBar extends React.Component {
           title={<SearchBar />}
           iconElementRight={
             <FlatButton
-              label={this.props.info.username}
+              label={this.props.info.get('username')}
               onTouchTap={this.handleTouchTap}
             />
           }
