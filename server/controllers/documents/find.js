@@ -40,6 +40,12 @@ const find = {
           message: 'There was a databse error'
         };
       }
+      if (req.query.username) {
+        documents = documents.filter((document) => {
+          const user = document.owner.username;
+          return user === req.query.username;
+        });
+      }
       res.json(documents);
     });
   }

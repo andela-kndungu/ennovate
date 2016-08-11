@@ -7,7 +7,6 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import { Map, List } from 'immutable';
-import { Link } from 'react-router';
 
 import SearchBar from '../SearchBar/index.jsx';
 import LogOutCard from '../authentication/logOut/LogOutCard.jsx';

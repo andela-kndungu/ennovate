@@ -16,7 +16,7 @@ const DocumentCard = (props) => {
   return (
     <Card style={{ width: '300px', margin: '20px', float: 'left' }}>
       <CardHeader
-        style={{ fontSize: '15px' }}
+        style={{ fontSize: '15px', cursor: 'pointer' }}
         title={props.owner.username}
         subtitle={
           <div style={{ fontSize: '11px' }}>
@@ -25,7 +25,11 @@ const DocumentCard = (props) => {
           </div>
           }
         avatar={props.owner.photo}
-        actAsExpander
+        onTouchTap={() => {
+          fetchDocuments({ username: props.owner.username }, (action) => {
+            store.dispatch(action);
+          });
+        }}
       />
       <CardTitle
         title={props.title}
