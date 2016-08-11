@@ -5,6 +5,7 @@ import Popover from 'material-ui/Popover';
 import Dialog from 'material-ui/Dialog';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import HomeIcon from 'material-ui/svg-icons/action/home';
 import { Map, List } from 'immutable';
 
 import SearchBar from '../SearchBar/index.jsx';
@@ -98,6 +99,16 @@ class UserHome extends React.Component {
     return (
       <div>
         <AppBar
+          style={{ position: 'fixed' }}
+          iconElementLeft={
+            <FlatButton
+              style={{ marginTop: '9px', color: 'white' }}
+              labelStyle={{ textTransform: 'lowercase' }}
+              icon={<HomeIcon />}
+              label="ennovate"
+              onTouchTap={this.openLogIn}
+            />
+          }
           onLeftIconButtonTouchTap={this.toggleDrawer}
           title={<SearchBar />}
           iconElementRight={
@@ -116,7 +127,7 @@ class UserHome extends React.Component {
         >
           <LogOutCard userDetails={this.props.userDetails} />
         </Popover>
-        <div>
+        <div style={{ width: '90%', margin: 'auto', paddingTop: '64px' }}>
           {nodes}
         </div>
         <Dialog

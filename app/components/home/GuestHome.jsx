@@ -93,7 +93,6 @@ class GuestAppBar extends React.Component {
           iconElementRight={
             <FlatButton
               icon={<LogInIcon />}
-              label="LOGIN"
               onTouchTap={this.openLogIn}
             />
           }
