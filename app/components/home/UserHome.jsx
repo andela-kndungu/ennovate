@@ -7,6 +7,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import { Map, List } from 'immutable';
+import { Link } from 'react-router';
 
 import SearchBar from '../SearchBar/index.jsx';
 import LogOutCard from '../authentication/logOut/LogOutCard.jsx';
@@ -101,14 +102,17 @@ class UserHome extends React.Component {
         <AppBar
           style={{ position: 'fixed' }}
           iconElementLeft={
-            <a href="/">
-              <FlatButton
-                style={{ marginTop: '9px', color: 'white' }}
-                labelStyle={{ textTransform: 'lowercase' }}
-                icon={<HomeIcon />}
-                label="ennovate"
-              />
-            </a>
+            <FlatButton
+              style={{ marginTop: '9px', color: 'white' }}
+              labelStyle={{ textTransform: 'lowercase' }}
+              icon={<HomeIcon />}
+              label="ennovate"
+              onTouchTap={() => {
+                fetchDocuments({}, (action) => {
+                  store.dispatch(action);
+                });
+              }}
+            />
           }
           onLeftIconButtonTouchTap={this.toggleDrawer}
           title={<SearchBar />}
