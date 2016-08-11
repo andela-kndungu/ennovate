@@ -18,8 +18,6 @@ const authenticate = {
             message: 'Failed to authenticate token',
           });
         }
-        console.log(decoded);
-        console.log('adf');
 
         // Valid, save decoded object for possibly other routes to use
         req.decoded = decoded;

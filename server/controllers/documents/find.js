@@ -3,8 +3,9 @@ import Documents from '../../models/documents.js';
 const find = {
   // Retrieve all documents
   all: (req, res) => {
+    console.log(req.decoded);
     // Roles of user trying to access document
-    const rolesOfUser = [];
+    const rolesOfUser = ['kinuthia'];
 
     // Users can only access public documents or those
     // belonging to a role they are assigned

@@ -1,24 +1,25 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
+import { Map, List } from 'immutable';
 
-import SignUpForm from './DocumentForm.jsx';
+import AddDocumentForm from './DocumentForm.jsx';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
   return ({
     categories: state.app.get('categories'),
-    user: state.app.get('auth')
+    userDetails: state.app.getIn(['auth', 'userDetails'])
   });
 };
 
-
+console.log(AddDocumentForm);
 const MyTabs = (props) => (
   <Tabs>
     <Tab label="ADD DOCUMENT" >
       <div>
-        <SignUpForm
-          categories={props.categories.toJS()}
-          user={props.user.get('info')}
+        <AddDocumentForm
+          categories={props.categories}
+          userDetails={props.userDetails}
         />
       </div>
     </Tab>
@@ -26,8 +27,8 @@ const MyTabs = (props) => (
 );
 
 MyTabs.propTypes = {
-  categories: React.PropTypes.array,
-  user: React.PropTypes.obj
+  categories: React.PropTypes.instanceOf(List),
+  userDetails: React.PropTypes.instanceOf(Map)
 };
 
 export default connect(mapStateToProps)(MyTabs);

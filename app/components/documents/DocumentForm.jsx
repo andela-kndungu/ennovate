@@ -1,16 +1,12 @@
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
-import { Field, reduxForm } from 'redux-form';
-import { TextField, SelectField } from 'redux-form-material-ui';
+import TextField from 'material-ui/TextField';
 import request from 'superagent';
-import MenuItem from 'material-ui/MenuItem';
-import store from '../../redux/store';
+import { List, Map } from 'immutable';
 import socket from '../../socket';
-
-const fields = [
-  'title',
-  'content'
-];
+import AutoComplete from 'material-ui/AutoComplete';
+import Toggle from 'material-ui/Toggle';
+import store from '../../redux/store';
 
 const divStyle = {
   marginTop: '20px',
@@ -31,112 +27,115 @@ const buttonStyle = {
   marginTop: '20px',
 };
 
-const validate = (values) => {
-  const errors = {};
-  const requiredFields = [
-    'title',
-    'content',
-  ];
+class AddDocumentForm extends React.Component {
+  constructor(props) {
+    super(props);
 
-  requiredFields.forEach((field) => {
-    if (!values[field]) {
-      errors[field] = 'Required';
-    }
-  });
+    this.state = {
+      category: '',
+      public: true
+    };
 
-  return errors;
-};
-
-const SignUpForm = (props) => {
-  let categories = props.categories;
-  categories = categories.map((categoryObject) => {
-    return (
-      <MenuItem
-        value={categoryObject.title}
-        primaryText={categoryObject.title}
-      />
-    );
-  });
-  return (
-    <div style={divStyle}>
-      <div style={fieldStyle}>
-        <Field
-          name="category"
-          component={SelectField}
-          hintText="Category"
-          floatingLabelText="Category"
-        >
-          {
-            categories
-          }
-        </Field>
-      </div>
-      <div style={fieldStyle}>
-        <Field
-          style={{ width: '100%' }}
-          name="title"
-          component={TextField}
-          hintText="Title"
-          floatingLabelText="Title"
-        />
-      </div>
-      <div style={fieldStyle}>
-        <Field
-          style={{ width: '100%' }}
-          name="content"
-          component={TextField}
-          hintText="Content"
-          floatingLabelText="Content"
-          multiLine
-          rowsMax={4}
-        />
-      </div>
-      <FlatButton
-        style={buttonStyle}
-        label="Add"
-        onClick={props.handleSubmit}
-      />
-    </div>
-  );
-};
-
-SignUpForm.propTypes = {
-  handleSubmit: React.PropTypes.func.isRequired,
-};
-
-const signUpUser = (values) => {
-  request
-    .post('api/documents')
-    .send({
-      title: values.title,
-      content: values.content,
-      category: values.category
-    })
-    .set('x-access-token', localStorage.getItem('token'))
-    .end((error, response) => {
-      if (error) {
-        store.dispatch({
-          type: 'SIGN_UP_USER_FAILURE',
-          payload: {
-            error
-          }
-        });
-      }
-      socket.emit('newDocument', response.body);
-      console.log(response.body);
-    });
-};
-
-SignUpForm.propTypes = {
-  categories: React.PropTypes.array
-};
-
-export default reduxForm({
-  form: 'simple',
-  validate,
-  fields,
-  onSubmit: (values) => {
-    signUpUser(values);
+    this.createDocument = this.createDocument.bind(this);
   }
-})(SignUpForm);
+
+  createDocument() {
+    request
+      .post('api/documents')
+      .send({
+        title: this.state.title,
+        content: this.state.content,
+        category: this.state.category,
+        accessibleBy: this.state.public ? ['user'] : [this.props.userDetails.get('username')]
+      })
+      .set('x-access-token', localStorage.getItem('token'))
+      .end((error, response) => {
+        if (error) {
+          return null;
+        }
+        console.log(response.body);
+
+        store.dispatch({ type: 'TOGGLE_ADD_DOCUMENT' });
+        return socket.emit('newDocument', response.body);
+      });
+  }
+
+  render() {
+    let categories = this.props.categories.toJS();
+    categories = categories.map((categoryObject) => {
+      return categoryObject.title;
+    });
+    return (
+      <div style={divStyle}>
+        <div style={fieldStyle}>
+          <AutoComplete
+            style={{ width: '100%' }}
+            floatingLabelText="Choose or create category"
+            filter={AutoComplete.fuzzyFilter}
+            openOnFocus
+            dataSource={categories}
+            onNewRequest={(chosen) => {
+              this.setState({
+                category: chosen
+              });
+            }}
+            onBlur={(event) => {
+              this.setState({
+                category: event.target.value
+              });
+            }}
+          />
+        </div>
+        <div style={fieldStyle}>
+          <TextField
+            style={{ width: '100%' }}
+            name="title"
+            floatingLabelText="Title"
+            onChange={(event) => {
+              this.setState({
+                title: event.target.value
+              });
+            }}
+          />
+        </div>
+        <div style={fieldStyle}>
+          <TextField
+            style={{ width: '100%' }}
+            name="content"
+            floatingLabelText="Content"
+            multiLine
+            rowsMax={4}
+            onChange={(event) => {
+              this.setState({
+                content: event.target.value
+              });
+            }}
+          />
+        </div>
+        <div style={fieldStyle}>
+          <Toggle
+            style={{ width: '100px', marginTop: '20px', marginBottom: '10px' }}
+            label="Public"
+            defaultToggled
+            onToggle={() => {
+              this.setState({ public: !this.state.public });
+            }}
+          />
+        </div>
+        <FlatButton
+          style={buttonStyle}
+          label="Add"
+          onClick={this.createDocument}
+        />
+      </div>
+    );
+  }
+}
+
+AddDocumentForm.propTypes = {
+  categories: React.PropTypes.instanceOf(List),
+  userDetails: React.PropTypes.instanceOf(Map)
+};
+
+export default AddDocumentForm;
 

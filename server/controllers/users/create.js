@@ -29,7 +29,6 @@ const create = (req, res) => {
         .query({ ip: 'auto' })
         .query({ key: process.env.GENDER_API_KEY })
         .end((err, resp) => {
-          console.log(resp.body);
           // Declare new instance of the Users model
           const newUser = new Users();
 

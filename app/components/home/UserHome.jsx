@@ -2,18 +2,19 @@ import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
-import LogOutCard from '../authentication/logOut/LogOutCard.jsx';
+import Dialog from 'material-ui/Dialog';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import Drawer from 'material-ui/Drawer';
-import Menu from '../drawer/Menu.jsx';
-import { fetchCategories, fetchDocuments } from '../../redux/actions';
-import store from '../../redux/store';
+import { Map, List } from 'immutable';
+
+import SearchBar from '../SearchBar/index.jsx';
+import LogOutCard from '../authentication/logOut/LogOutCard.jsx';
 import Card from '../cards/Test.jsx';
 import Add from '../documents/Add.jsx';
-import Dialog from 'material-ui/Dialog';
-import SearchBar from '../SearchBar/index.jsx';
-const style = {
+import { fetchDocuments, fetchCategories } from '../../redux/actions';
+import store from '../../redux/store';
+
+const fabStyle = {
   margin: 0,
   top: 'auto',
   right: 20,
@@ -22,83 +23,78 @@ const style = {
   position: 'fixed',
 };
 
-class MyAppBar extends React.Component {
+class UserHome extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      open: false,
+      logOutOpen: false,
       addDocumentOpen: false
     };
 
-    this.handleTouchTap = this.handleTouchTap.bind(this);
-    this.handleRequestClose = this.handleRequestClose.bind(this);
-    this.toggleDrawer = this.toggleDrawer.bind(this);
-    this.openAddDocument = this.openAddDocument.bind(this);
-    this.closeAddDocument = this.closeAddDocument.bind(this);
-  }
-
-  componentWillMount() {
-    fetchCategories((action) => {
-      store.dispatch(action);
-    });
+    this.openLogOut = this.openLogOut.bind(this);
+    this.closeLogOut = this.closeLogOut.bind(this);
   }
 
   componentDidMount() {
     fetchDocuments((action) => {
       store.dispatch(action);
     });
+
+    fetchCategories((action) => {
+      store.dispatch(action);
+    });
   }
 
-  handleTouchTap(event) {
+  openLogOut(event) {
     // This prevents ghost click.
     event.preventDefault();
 
     this.setState({
-      open: true,
+      logOutOpen: true,
       anchorEl: event.currentTarget,
     });
   }
 
-  toggleDrawer() {
-    store.dispatch({ type: 'CHANGE_CATEGORY' });
-  }
-
-  handleRequestClose() {
+  closeLogOut() {
     this.setState({
-      open: false,
+      logOutOpen: false,
     });
   }
 
-  openAddDocument() {
-    this.setState({ addDocumentOpen: true });
-  }
+  filterDocuments(searchTerm, documents) {
+    return documents.filter((document) => {
+      if (searchTerm === '') {
+        return true;
+      }
 
-  closeAddDocument() {
-    this.setState({ addDocumentOpen: false });
+      const inTitle = document.title.toLowerCase().indexOf(searchTerm);
+      const inContent = document.content.toLowerCase().indexOf(searchTerm);
+
+      return inTitle > -1 || inContent > -1;
+    });
   }
 
   render() {
-    const nodes = this.props.filteredDocuments.map((document) => {
+    const searchTerm = this.props.searchTerm;
+    const documents = this.props.documents.toJS();
+    const filteredDocuments = this.filterDocuments(searchTerm, documents);
+    const nodes = filteredDocuments.map((document, index) => {
+      const canDelete = document.owner.username === this.props.userDetails.get('username');
+      const isPublic = document.accessibleBy.indexOf('user') > -1;
       return (
         <Card
+          key={index}
+          owner={document.owner}
           title={document.title}
           content={document.content}
-          owner={document.owner}
           date={document.createdAt}
-          key={document.createdAt}
+          category={document.category}
+          canDelete={canDelete}
+          isPublic={isPublic}
         />
       );
     });
-
-    const addDocumentDialogActions = [
-      <FlatButton
-        label="Cancel"
-        primary
-        onTouchTap={this.closeAddDocument}
-      />,
-    ];
-
     return (
       <div>
         <AppBar
@@ -106,45 +102,45 @@ class MyAppBar extends React.Component {
           title={<SearchBar />}
           iconElementRight={
             <FlatButton
-              label={this.props.info.get('username')}
-              onTouchTap={this.handleTouchTap}
-            />
-          }
-          iconElementCenter={
-            <FlatButton
-              label={this.props.info.username}
-              onTouchTap={this.handleTouchTap}
+              label={this.props.userDetails.get('username')}
+              onTouchTap={this.openLogOut}
             />
           }
         />
-        <Drawer
-          open={this.props.drawerOpen}
-          width={256}
-          docked={false}
-          onRequestChange={this.toggleDrawer}
-        >
-          <Menu />
-        </Drawer>
         <Popover
-          open={this.state.open}
+          open={this.state.logOutOpen}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
           targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          onRequestClose={this.handleRequestClose}
+          onRequestClose={this.closeLogOut}
         >
-          <LogOutCard info={this.props.info} />
+          <LogOutCard userDetails={this.props.userDetails} />
         </Popover>
-        <div>{nodes}</div>
+        <div>
+          {nodes}
+        </div>
         <Dialog
           title={<Add />}
-          actions={addDocumentDialogActions}
+          actions={[
+            <FlatButton
+              label="CANCEL"
+              primary
+              onTouchTap={() => {
+                store.dispatch({ type: 'TOGGLE_ADD_DOCUMENT' });
+              }}
+            />
+          ]}
           modal={false}
-          open={this.state.addDocumentOpen}
-          onRequestClose={this.closeDocument}
+          open={this.props.addDocumentOpen}
+          onRequestClose={() => {
+            store.dispatch({ type: 'TOGGLE_ADD_DOCUMENT' });
+          }}
         />
         <FloatingActionButton
-          onTouchTap={this.openAddDocument}
-          style={style}
+          onTouchTap={() => {
+            store.dispatch({ type: 'TOGGLE_ADD_DOCUMENT' });
+          }}
+          style={fabStyle}
           secondary
         >
           <ContentAdd />
@@ -154,7 +150,12 @@ class MyAppBar extends React.Component {
   }
 }
 
-MyAppBar.propTypes = React.PropTypes.string.isRequired;
+UserHome.propTypes = {
+  userDetails: React.PropTypes.instanceOf(Map),
+  documents: React.PropTypes.instanceOf(List),
+  searchTerm: React.PropTypes.string,
+  addDocumentOpen: React.PropTypes.bool
+};
 
-export default MyAppBar;
+export default UserHome;
 

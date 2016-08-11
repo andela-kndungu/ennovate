@@ -7,6 +7,7 @@ import {
   CardText
 } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import Chip from 'material-ui/Chip';
 import moment from 'moment';
 
 const DocumentCard = (props) => {
@@ -14,34 +15,44 @@ const DocumentCard = (props) => {
     <Card style={{ width: '300px', margin: '20px', float: 'left' }}>
       <CardHeader
         style={{ fontSize: '15px' }}
-        title={props.owner.username || 'kinuthia'}
+        title={props.owner.username}
         subtitle={
           <div style={{ fontSize: '11px' }}>
             <div>{moment(props.date).format('Do MMMM YYYY')}</div>
             <div>{moment(props.date).format('h:mm:ss a')}</div>
           </div>
           }
-        avatar={props.owner.photo || "http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png"}
-        actAsExpander
-      />
-      <CardTitle
-        title={props.title}
-        actAsExpander
-        style={{ paddingTop: '0px', paddingBottom: '0px' }}
-      />
-      <CardText expandable>
-        <div style={{ fontWeight: '300' }}>
-          {props.content}
-        </div>
-      </CardText>
-      <CardActions style={{ textAlign: 'right' }}>
-        <FlatButton
-          label="Edit"
-          secondary
-          disabled={props.disableEdit}
+          avatar={props.owner.photo}
+          actAsExpander
         />
-      </CardActions>
-    </Card>
+        <CardTitle
+          title={props.title}
+          actAsExpander
+          style={{ paddingTop: '0px', paddingBottom: '0px' }}
+        />
+        <CardText expandable>
+          <div style={{ fontWeight: '300' }}>
+            {props.content}
+          </div>
+        </CardText>
+        <CardActions style={{ textAlign: 'right' }}>
+          <Chip
+            style={{
+              float: 'left',
+              marginBottom: '12px',
+              marginLeft: '7px',
+              backgroundColor: props.isPublic ? 'lightgreen' : 'lightblue'
+            }}
+          >
+            {props.category}
+          </Chip>
+          <FlatButton
+            label="Delete"
+            secondary
+            disabled={!props.canDelete}
+          />
+        </CardActions>
+      </Card>
   );
 };
 
@@ -49,7 +60,13 @@ DocumentCard.propTypes = {
   date: React.PropTypes.string,
   title: React.PropTypes.string,
   content: React.PropTypes.string,
-  disableEdit: React.PropTypes.bool
+  canDelete: React.PropTypes.bool,
+  isPublic: React.PropTypes.bool,
+  category: React.PropTypes.string,
+  owner: React.PropTypes.shape({
+    username: React.PropTypes.string,
+    photo: React.PropTypes.string,
+  })
 };
 
 export default DocumentCard;

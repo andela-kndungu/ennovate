@@ -4,20 +4,21 @@ import { fromJS } from 'immutable';
 const defaultState = fromJS({
   auth: {
     isAuthenticated: false,
-    token: null
   },
-  documents: fromJS([]),
-  categories: [{ title: 'general' }],
+  documents: [],
+  categories: fromJS([]),
   filteredDocuments: [],
   currentCategory: 'general',
-  drawerOpen: false
+  drawerOpen: false,
+  searchTerm: '',
+  addDocumentOpen: false
 });
 
 export default function (state = defaultState, action) {
   let stateDuplicate = state;
   switch (action.type) {
     case 'LOG_IN_USER_SUCCESS':
-      stateDuplicate = state.updateIn(
+      stateDuplicate = stateDuplicate.updateIn(
         ['auth', 'isAuthenticated'],
         () => {
           return true;
@@ -25,7 +26,7 @@ export default function (state = defaultState, action) {
       );
 
       stateDuplicate = stateDuplicate.updateIn(
-        ['auth', 'info'],
+        ['auth', 'userDetails'],
         () => {
           const userInfo = jwtDecode(action.payload.token);
           return fromJS(userInfo);
@@ -36,26 +37,22 @@ export default function (state = defaultState, action) {
     case 'FETCHED_DOCUMENTS':
       return stateDuplicate.update(
         'documents',
-        [],
         () => {
           return fromJS(action.payload);
         }
       );
     case 'FETCHED_CATEGORIES':
       return state.update('categories',
-        [],
         (current) => {
           return current.concat(fromJS(action.payload));
         });
-    case 'FILTER_DOCUMENTS':
-      return state.update('filteredDocuments',
-        [],
+    case 'SEARCH_DOCUMENTS':
+      return state.update('searchTerm',
         () => {
           return action.payload;
         });
-    case 'CHANGE_CATEGORY':
-      return state.update('drawerOpen',
-        [],
+    case 'TOGGLE_ADD_DOCUMENT':
+      return state.update('addDocumentOpen',
         (current) => {
           return !current;
         });
