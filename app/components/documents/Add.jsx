@@ -12,7 +12,6 @@ const mapStateToProps = (state) => {
   });
 };
 
-console.log(AddDocumentForm);
 const MyTabs = (props) => (
   <Tabs>
     <Tab label="ADD DOCUMENT" >

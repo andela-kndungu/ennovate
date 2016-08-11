@@ -19,6 +19,11 @@ const find = {
       }]
     });
 
+    // Return documents created on a specific day
+    if (req.query.category) {
+      query.where('category').equals(req.query.category);
+    }
+
     query.populate('owner');
 
     // Sort by date in descendig order (latest first)

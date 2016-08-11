@@ -27,8 +27,9 @@ export function logInUser(username, password) {
     });
 }
 
-export function fetchDocuments(callback) {
+export function fetchDocuments(query, callback) {
   request.get('api/documents')
+    .query(query)
     .end((error, response) => {
       return callback({
         type: 'FETCHED_DOCUMENTS',

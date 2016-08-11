@@ -38,7 +38,7 @@ class UserHome extends React.Component {
   }
 
   componentDidMount() {
-    fetchDocuments((action) => {
+    fetchDocuments({}, (action) => {
       store.dispatch(action);
     });
 
@@ -101,13 +101,14 @@ class UserHome extends React.Component {
         <AppBar
           style={{ position: 'fixed' }}
           iconElementLeft={
-            <FlatButton
-              style={{ marginTop: '9px', color: 'white' }}
-              labelStyle={{ textTransform: 'lowercase' }}
-              icon={<HomeIcon />}
-              label="ennovate"
-              onTouchTap={this.openLogIn}
-            />
+            <a href="/">
+              <FlatButton
+                style={{ marginTop: '9px', color: 'white' }}
+                labelStyle={{ textTransform: 'lowercase' }}
+                icon={<HomeIcon />}
+                label="ennovate"
+              />
+            </a>
           }
           onLeftIconButtonTouchTap={this.toggleDrawer}
           title={<SearchBar />}
@@ -165,7 +166,8 @@ UserHome.propTypes = {
   userDetails: React.PropTypes.instanceOf(Map),
   documents: React.PropTypes.instanceOf(List),
   searchTerm: React.PropTypes.string,
-  addDocumentOpen: React.PropTypes.bool
+  addDocumentOpen: React.PropTypes.bool,
+  history: React.PropTypes.object
 };
 
 export default UserHome;
