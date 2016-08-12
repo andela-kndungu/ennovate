@@ -10,6 +10,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Chip from 'material-ui/Chip';
 import moment from 'moment';
 import request from 'superagent';
+import { Editor, EditorState } from 'draft-js';
 
 import { fetchDocuments } from '../../redux/actions';
 import store from '../../redux/store';
@@ -33,65 +34,76 @@ const deleteDocument = (documentId) => {
     });
 };
 
-const DocumentCard = (props) => {
-  return (
-    <Card style={{ width: '300px', margin: '20px', float: 'left' }}>
-      <CardHeader
-        style={{ fontSize: '15px', cursor: 'pointer' }}
-        title={props.owner.username}
-        subtitle={
-          <div style={{ fontSize: '11px' }}>
-            <div>{moment(props.date).format('Do MMMM YYYY')}</div>
-            <div>{moment(props.date).format('h:mm:ss a')}</div>
-          </div>
-        }
-        avatar={props.owner.photo}
-        onTouchTap={() => {
-          fetchDocuments({ username: props.owner.username }, (action) => {
-            store.dispatch(action);
-          });
-        }}
-      />
-      <CardTitle
-        title={props.title}
-        actAsExpander
-        style={{ paddingTop: '0px', paddingBottom: '0px' }}
-      />
-      <CardText expandable>
-        <div style={{ fontWeight: '300' }}>
-          {props.content}
-        </div>
-      </CardText>
-      <CardActions style={{ textAlign: 'right' }}>
-        <Chip
-          style={{
-            float: 'left',
-            marginBottom: '12px',
-            marginLeft: '7px',
-            backgroundColor: props.isPublic ? 'lightgreen' : 'lightblue'
-          }}
-          onTouchTap={() => {
-            fetchDocuments({ category: props.category }, (action) => {
-              store.dispatch(action);
-            });
-          }}
-        >
-          {props.category}
-        </Chip>
-        <FlatButton
-          label="Delete"
-          secondary
-          disabled={!props.canDelete}
-          onTouchTap={(event) => {
-            event.preventDefault();
+class DocumentCard extends React.Component {
+  constructor(props) {
+    super(props);
 
-            deleteDocument(props.documentId);
-          }}
-        />
-      </CardActions>
-    </Card>
-  );
-};
+    this.state = { editorState: EditorState.createEmpty() };
+    this.onChange = (editorState) => this.setState({editorState});
+  }
+  render() {
+    return (
+      <Card style={{ width: '300px', margin: '20px', float: 'left' }}>
+        <CardHeader
+          style={{ fontSize: '15px', cursor: 'pointer' }}
+          title={this.props.owner.username}
+          subtitle={
+            <div style={{ fontSize: '11px' }}>
+              <div>{moment(this.props.date).format('Do MMMM YYYY')}</div>
+              <div>{moment(this.props.date).format('h:mm:ss a')}</div>
+            </div>
+            }
+            avatar={this.props.owner.photo}
+            onTouchTap={() => {
+              fetchDocuments({ username: this.props.owner.username }, (action) => {
+                store.dispatch(action);
+              });
+            }}
+          />
+          <CardTitle
+            title={this.props.title}
+            actAsExpander
+            style={{ paddingTop: '0px', paddingBottom: '0px' }}
+          />
+          <CardText expandable>
+            <div>
+            <div style={{ fontWeight: '300' }}>
+              {this.props.content}
+            </div>
+            <Editor editorState={this.state.editorState} onChange={this.onChange}/>
+          </div>
+          </CardText>
+          <CardActions style={{ textAlign: 'right' }}>
+            <Chip
+              style={{
+                float: 'left',
+                marginBottom: '12px',
+                marginLeft: '7px',
+                backgroundColor: this.props.isPublic ? 'lightgreen' : 'lightblue'
+              }}
+              onTouchTap={() => {
+                fetchDocuments({ category: this.props.category }, (action) => {
+                  store.dispatch(action);
+                });
+              }}
+            >
+              {this.props.category}
+            </Chip>
+            <FlatButton
+              label="Delete"
+              secondary
+              disabled={!this.props.canDelete}
+              onTouchTap={(event) => {
+                event.preventDefault();
+
+                deleteDocument(this.props.documentId);
+              }}
+            />
+          </CardActions>
+        </Card>
+    );
+  }
+}
 
 DocumentCard.propTypes = {
   date: React.PropTypes.string,
