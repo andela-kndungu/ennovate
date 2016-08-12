@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../../../public/index.html'));
 });
 
-router.get('/api/documents', DocumentsController.find.all);
+router.get('/api/documents/public', DocumentsController.find.public);
 
 // Create a user (POST /users)
 router.post('/api/users', UsersController.create);

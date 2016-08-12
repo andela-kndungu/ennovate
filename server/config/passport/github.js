@@ -40,7 +40,8 @@ const handleResponse = (token, refreshToken, profile, done) => {
             newUser.name.last = lastName;
             newUser.email = email;
             newUser.photo = profile.photos[0].value;
-            newUser.username = profile.username;
+            newUser.username = profile.username.toLowerCase();
+            newUser.roles = ['user', profile.username.toLowerCase()];
 
             // save the user
             newUser.save((er) => {

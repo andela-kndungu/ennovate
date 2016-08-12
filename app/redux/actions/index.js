@@ -27,8 +27,21 @@ export function logInUser(username, password) {
     });
 }
 
-export function fetchDocuments(callback) {
+export function fetchDocuments(query, callback) {
   request.get('api/documents')
+    .query(query)
+    .set('x-access-token', localStorage.getItem('token'))
+    .end((error, response) => {
+      return callback({
+        type: 'FETCHED_DOCUMENTS',
+        payload: response.body
+      });
+    });
+}
+
+export function fetchPublicDocuments(query, callback) {
+  request.get('api/documents/public')
+    .query(query)
     .end((error, response) => {
       return callback({
         type: 'FETCHED_DOCUMENTS',

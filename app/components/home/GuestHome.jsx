@@ -11,10 +11,10 @@ import Add from '../documents/Add.jsx';
 import store from '../../redux/store';
 import socket from '../../socket';
 
-import { fetchDocuments } from '../../redux/actions';
+import { fetchPublicDocuments } from '../../redux/actions';
 
 socket.on('newDocument', () => {
-  fetchDocuments((action) => {
+  fetchPublicDocuments({}, (action) => {
     store.dispatch(action);
   });
 });
@@ -35,7 +35,7 @@ class GuestAppBar extends React.Component {
   }
 
   componentDidMount() {
-    fetchDocuments((action) => {
+    fetchPublicDocuments({}, (action) => {
       store.dispatch(action);
     });
   }
@@ -92,8 +92,8 @@ class GuestAppBar extends React.Component {
           iconElementLeft={<span></span>}
           iconElementRight={
             <FlatButton
-              icon={<LogInIcon />}
               label="LOGIN"
+              icon={<LogInIcon />}
               onTouchTap={this.openLogIn}
             />
           }
