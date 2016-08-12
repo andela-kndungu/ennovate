@@ -23,6 +23,13 @@ const fabStyle = {
   left: 'auto',
   position: 'fixed',
 };
+import socket from '../../socket';
+
+socket.on('newDocument', () => {
+  fetchDocuments({}, (action) => {
+    store.dispatch(action);
+  });
+});
 
 class UserHome extends React.Component {
   constructor(props) {
@@ -80,6 +87,7 @@ class UserHome extends React.Component {
     const searchTerm = this.props.searchTerm;
     const documents = this.props.documents.toJS();
     const filteredDocuments = this.filterDocuments(searchTerm, documents);
+    console.log(filteredDocuments);
     const nodes = filteredDocuments.map((document, index) => {
       const canDelete = document.owner.username === this.props.userDetails.get('username');
       const isPublic = document.accessibleBy.indexOf('user') > -1;
@@ -91,6 +99,7 @@ class UserHome extends React.Component {
           content={document.content}
           date={document.createdAt}
           category={document.category}
+          documentId={document._id}
           canDelete={canDelete}
           isPublic={isPublic}
         />

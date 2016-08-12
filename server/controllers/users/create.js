@@ -11,8 +11,9 @@ const create = (req, res) => {
     if (user) {
       user.username = req.body.username;
       user.password = req.body.password;
-      user.firstName = req.body.firstName;
-      user.lastName = req.body.lastName;
+      user.name.first = req.body.firstName;
+      user.name.last = req.body.lastName;
+      user.roles = [req.body.username];
 
       user.save((err) => {
         if (err) {
@@ -33,11 +34,12 @@ const create = (req, res) => {
           const newUser = new Users();
 
           // Define values of the new object to add
-          newUser.username = req.body.username;
+          newUser.username = req.body.username.toLowerCase();
           newUser.name.first = req.body.firstName;
           newUser.name.last = req.body.lastName;
           newUser.email = req.body.email;
           newUser.password = req.body.password;
+          user.roles = [req.body.username];
 
           switch (resp.body.gender) {
             case 'male':

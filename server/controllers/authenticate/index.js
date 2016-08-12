@@ -12,6 +12,7 @@ const authenticate = {
       jwt.verify(token, process.env.SECRET_KEY, (error, decoded) => {
         // When token is not valid
         if (error) {
+          console.log('INVALID TOKEN');
           // Set status to unauthorized and return fail json
           return res.status(401).json({
             success: false,
@@ -26,6 +27,7 @@ const authenticate = {
         next();
       });
     } else {
+      console.log('NO TOKEN');
       // No token provided, set status to unauthorized and return fail json
       return res.status(401).json({
         success: false,
