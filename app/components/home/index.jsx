@@ -7,14 +7,14 @@ import UserHome from '../../redux/containers/UserHome.jsx';
 const Home = (props) => {
   return (
     props.isAuthenticated
-    ? <UserHome info={props.info} />
+    ? <UserHome userDetails={props.userDetails} />
     : <GuestHome />
   );
 };
 
 Home.propTypes = {
   isAuthenticated: React.PropTypes.bool.isRequired,
-  info: React.PropTypes.instanceOf(Map)
+  userDetails: React.PropTypes.instanceOf(Map)
 };
 
 export default Home;

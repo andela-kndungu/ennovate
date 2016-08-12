@@ -1,9 +1,9 @@
 import Documents from '../../models/documents.js';
+import Categories from '../../models/categories.js';
 
 import parseError from '../parseError.js';
 
 const create = (req, res) => {
-  console.log('I have been called');
   // Declare new instance of the Documents model
   const document = new Documents();
   // Define values of the new objet to add
@@ -13,12 +13,23 @@ const create = (req, res) => {
   document.category = req.body.category;
   document.accessibleBy = req.body.accessibleBy || ['user'];
 
-  console.log(document);
+  // Create new tags if necessary
+  Categories.find({
+    title: document.category
+  }, (error, found) => {
+    if (!found[0]) {
+      const newCategory = new Categories();
+      newCategory.title = document.category;
+      newCategory.save();
+    }
+  });
+
   // Save the new document parsing the error if request is invalid
   document.save((saveError) => {
     if (saveError) {
       return parseError(res, saveError);
     }
+    console.log(document);
 
     // Document created, return newly created document
     return res.json(document);

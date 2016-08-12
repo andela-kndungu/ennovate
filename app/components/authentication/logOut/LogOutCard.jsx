@@ -13,15 +13,15 @@ const container = {
 };
 
 const LogOutCard = (props) => {
-  const first = props.info.getIn(['name', 'first']);
-  const last = props.info.getIn(['name', 'last']);
+  const first = props.userDetails.getIn(['name', 'first']);
+  const last = props.userDetails.getIn(['name', 'last']);
   return (
     <div style={container}>
       <div>
-        <Avatar photo={props.info.get('photo')} />
+        <Avatar photo={props.userDetails.get('photo')} />
         <Info
           name={{ first, last }}
-          email={props.info.get('email')}
+          email={props.userDetails.get('email')}
         />
       </div>
       <Divider />
@@ -31,7 +31,7 @@ const LogOutCard = (props) => {
 };
 
 LogOutCard.propTypes = {
-  info: React.PropTypes.instanceOf(Map)
+  userDetails: React.PropTypes.instanceOf(Map)
 };
 
 export default LogOutCard;

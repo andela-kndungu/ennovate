@@ -12,14 +12,13 @@ const authenticate = {
       jwt.verify(token, process.env.SECRET_KEY, (error, decoded) => {
         // When token is not valid
         if (error) {
+          console.log('INVALID TOKEN');
           // Set status to unauthorized and return fail json
           return res.status(401).json({
             success: false,
             message: 'Failed to authenticate token',
           });
         }
-        console.log(decoded);
-        console.log('adf');
 
         // Valid, save decoded object for possibly other routes to use
         req.decoded = decoded;
@@ -28,6 +27,7 @@ const authenticate = {
         next();
       });
     } else {
+      console.log('NO TOKEN');
       // No token provided, set status to unauthorized and return fail json
       return res.status(401).json({
         success: false,

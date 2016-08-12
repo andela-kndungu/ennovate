@@ -7,7 +7,9 @@ const mapStateToProps = (state) => {
     documents: state.app.get('documents'),
     filteredDocuments: state.app.get('filteredDocuments'),
     currentCategory: state.app.get('currentCategory'),
-    drawerOpen: state.app.get('drawerOpen')
+    drawerOpen: state.app.get('drawerOpen'),
+    searchTerm: state.app.get('searchTerm'),
+    addDocumentOpen: state.app.get('addDocumentOpen')
   });
 };
 
