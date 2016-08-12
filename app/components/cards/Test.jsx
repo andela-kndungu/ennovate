@@ -10,7 +10,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Chip from 'material-ui/Chip';
 import moment from 'moment';
 import request from 'superagent';
-import { Editor, EditorState } from 'draft-js';
+import { Editor, EditorState, RichUtils } from 'draft-js';
 
 import { fetchDocuments } from '../../redux/actions';
 import store from '../../redux/store';
@@ -40,7 +40,24 @@ class DocumentCard extends React.Component {
 
     this.state = { editorState: EditorState.createEmpty() };
     this.onChange = (editorState) => this.setState({editorState});
+    this.handleKeyCommand = this.handleKeyCommand.bind(this);
+    this.onBoldClick = this.onBoldClick.bind(this);
   }
+  handleKeyCommand(command) {
+    const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
+    if (newState) {
+      this.onChange(newState);
+      return true;
+
+    }
+    return false;
+
+  }
+
+  onBoldClick() {
+    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
+  }
+
   render() {
     return (
       <Card style={{ width: '300px', margin: '20px', float: 'left' }}>
@@ -67,11 +84,16 @@ class DocumentCard extends React.Component {
           />
           <CardText expandable>
             <div>
-            <div style={{ fontWeight: '300' }}>
-              {this.props.content}
+              <div style={{ fontWeight: '300' }}>
+                {this.props.content}
+              </div>
+              <button onClick={this.onBoldClick.bind(this)}>Bold</button>
+              <Editor
+                editorState={this.state.editorState}
+                onChange={this.onChange}
+                handleKeyCommand={this.handleKeyCommand}
+              />
             </div>
-            <Editor editorState={this.state.editorState} onChange={this.onChange}/>
-          </div>
           </CardText>
           <CardActions style={{ textAlign: 'right' }}>
             <Chip
