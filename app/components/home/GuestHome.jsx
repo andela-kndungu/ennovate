@@ -88,6 +88,7 @@ class GuestAppBar extends React.Component {
     return (
       <div>
         <AppBar
+          jtyle={{ position: 'fixed' }}
           title="ennovate"
           iconElementLeft={<span></span>}
           iconElementRight={
@@ -114,7 +115,7 @@ class GuestAppBar extends React.Component {
           onRequestClose={this.closeDocument}
         />
         <div style={{ height: '64px' }}></div>
-        <div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'center', flexDirection: 'row' }}>
           {nodes}
         </div>
       </div>

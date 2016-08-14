@@ -10,7 +10,13 @@ import FlatButton from 'material-ui/FlatButton';
 import Chip from 'material-ui/Chip';
 import moment from 'moment';
 import request from 'superagent';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import {
+  Editor,
+  EditorState,
+  RichUtils,
+  convertFromRaw,
+  convertToRaw
+} from 'draft-js';
 
 import { fetchDocuments } from '../../redux/actions';
 import store from '../../redux/store';
@@ -38,8 +44,8 @@ class DocumentCard extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { editorState: EditorState.createEmpty() };
-    this.onChange = (editorState) => this.setState({editorState});
+    this.state = { editorState: EditorState.createEmpty(), newState: EditorState.createEmpty() };
+    this.onChange = this.onChange.bind(this); 
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.onBoldClick = this.onBoldClick.bind(this);
   }
@@ -56,6 +62,14 @@ class DocumentCard extends React.Component {
 
   onBoldClick() {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
+  }
+
+  onChange(evt) {
+    const state = this.state.editorState.getCurrentContent()
+    const ab = convertToRaw(state);
+    console.log(JSON.stringify(ab));
+    const bc = convertFromRaw(ab);
+    this.setState({newState: EditorState.createWithContent(bc), value: evt.target.value});
   }
 
   render() {
@@ -86,13 +100,12 @@ class DocumentCard extends React.Component {
             <div>
               <div style={{ fontWeight: '300' }}>
                 {this.props.content}
+                <Editor
+                  editorState={this.state.editorState}
+                  onChange={this.onChange}
+                  handleKeyCommand={this.handleKeyCommand}
+                />
               </div>
-              <button onClick={this.onBoldClick.bind(this)}>Bold</button>
-              <Editor
-                editorState={this.state.editorState}
-                onChange={this.onChange}
-                handleKeyCommand={this.handleKeyCommand}
-              />
             </div>
           </CardText>
           <CardActions style={{ textAlign: 'right' }}>

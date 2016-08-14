@@ -39,7 +39,7 @@ const create = (req, res) => {
           newUser.name.last = req.body.lastName;
           newUser.email = req.body.email;
           newUser.password = req.body.password;
-          user.roles = [req.body.username];
+          newUser.roles = [req.body.username];
 
           switch (resp.body.gender) {
             case 'male':
