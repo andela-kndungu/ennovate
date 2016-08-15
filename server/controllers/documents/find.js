@@ -6,7 +6,6 @@ const find = {
     // Users can only access public documents or those
     // belonging to a role they are assigned
     const rolesOfUser = req.decoded.roles || [];
-    console.log(req.decoded);
 
     const query = Documents.find({
       $or: [{
@@ -38,7 +37,6 @@ const find = {
           message: 'There was a databse error'
         };
       }
-      console.log(documents);
       if (req.query.username) {
         documents = documents.filter((document) => {
           const user = document.owner.username;
@@ -74,7 +72,6 @@ const find = {
           message: 'There was a databse error'
         };
       }
-      console.log(documents);
       if (req.query.username) {
         documents = documents.filter((document) => {
           const user = document.owner.username;

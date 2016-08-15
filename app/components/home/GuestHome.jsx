@@ -88,6 +88,7 @@ class GuestAppBar extends React.Component {
     return (
       <div>
         <AppBar
+          style={{ position: 'fixed' }}
           title="ennovate"
           iconElementLeft={<span></span>}
           iconElementRight={
@@ -113,8 +114,7 @@ class GuestAppBar extends React.Component {
           open={this.state.addDocumentOpen}
           onRequestClose={this.closeDocument}
         />
-        <div style={{ height: '64px' }}></div>
-        <div>
+        <div style={{ paddingTop: '64px', display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'center', flexDirection: 'row' }}>
           {nodes}
         </div>
       </div>

@@ -10,5 +10,8 @@ router.post('/', DocumentsController.create);
 // Delete document by id (DELETE /documents/id)
 router.delete('/:id', DocumentsController.destroy);
 
+// Delete document by id (DELETE /documents/id)
+router.put('/:id', DocumentsController.update);
+
 export default router;
 
