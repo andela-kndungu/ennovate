@@ -6,6 +6,7 @@ import { List, Map } from 'immutable';
 import socket from '../../socket';
 import AutoComplete from 'material-ui/AutoComplete';
 import Toggle from 'material-ui/Toggle';
+import { Editor, EditorState, convertToRaw } from 'draft-js';
 import store from '../../redux/store';
 
 const divStyle = {
@@ -16,6 +17,42 @@ const fieldStyle = {
   display: 'block',
   margin: 'auto',
   width: '75%',
+};
+
+const titleStyle = {
+  display: 'block',
+  margin: 'auto',
+  width: '75%',
+  boxSizing: 'border-box',
+  border: '1px solid #ddd',
+  cursor: 'text',
+  borderRadius: '2px',
+  marginBottom: '2em',
+  boxShadow: 'inset 0px 1px 8px -3px #ABABAB',
+  background: '#fefefe',
+  maxHeight: '30px',
+  overflow: 'auto',
+  paddingTop: '5px',
+  paddingBottom: '10px',
+  paddingLeft: '10px'
+};
+
+const contentStyle = {
+  display: 'block',
+  margin: 'auto',
+  width: '75%',
+  boxSizing: 'border-box',
+  border: '1px solid #ddd',
+  cursor: 'text',
+  borderRadius: '2px',
+  marginBottom: '2em',
+  boxShadow: 'inset 0px 1px 8px -3px #ABABAB',
+  background: '#fefefe',
+  maxHeight: '250px',
+  overflow: 'auto',
+  paddingTop: '5px',
+  paddingBottom: '10px',
+  paddingLeft: '10px'
 };
 
 const buttonStyle = {
@@ -33,18 +70,25 @@ class AddDocumentForm extends React.Component {
 
     this.state = {
       category: '',
-      public: true
+      public: true,
+      titleState: EditorState.createEmpty(),
+      contentState: EditorState.createEmpty()
     };
+
+    this.titleChange = (titleState) => this.setState({ titleState });
+    this.contentChange = (contentState) => this.setState({ contentState });
 
     this.createDocument = this.createDocument.bind(this);
   }
 
   createDocument() {
+    const title = convertToRaw(this.state.titleState.getCurrentContent());
+    const content = convertToRaw(this.state.contentState.getCurrentContent());
     request
       .post('api/documents')
       .send({
-        title: this.state.title,
-        content: this.state.content,
+        title: JSON.stringify(title),
+        content: JSON.stringify(content),
         category: this.state.category,
         accessibleBy: this.state.public ? ['user'] : [this.props.userDetails.get('username')]
       })
@@ -87,30 +131,16 @@ class AddDocumentForm extends React.Component {
           />
         </div>
         <div style={fieldStyle}>
-          <TextField
-            style={{ width: '100%' }}
-            name="title"
-            floatingLabelText="Title"
-            onChange={(event) => {
-              this.setState({
-                title: event.target.value
-              });
-            }}
-          />
+          <p>Title</p>
+        </div>
+        <div style={titleStyle}>
+          <Editor editorState={this.state.titleState} onChange={this.titleChange} />
         </div>
         <div style={fieldStyle}>
-          <TextField
-            style={{ width: '100%' }}
-            name="content"
-            floatingLabelText="Content"
-            multiLine
-            rowsMax={4}
-            onChange={(event) => {
-              this.setState({
-                content: event.target.value
-              });
-            }}
-          />
+          <p>Content</p>
+        </div>
+        <div style={contentStyle}>
+          <Editor editorState={this.state.contentState} onChange={this.contentChange} />
         </div>
         <div style={fieldStyle}>
           <Toggle

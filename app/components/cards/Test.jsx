@@ -13,7 +13,6 @@ import request from 'superagent';
 import {
   Editor,
   EditorState,
-  RichUtils,
   convertFromRaw,
   convertToRaw
 } from 'draft-js';
@@ -23,18 +22,27 @@ import store from '../../redux/store';
 import socket from '../../socket';
 
 const deleteDocument = (documentId) => {
-  console.log('+++++++++++++');
-  console.log(documentId);
-  console.log('+++++++++++++');
   request
     .delete(`api/documents/${documentId}`)
     .set('x-access-token', localStorage.getItem('token'))
     .end((error, response) => {
       if (error) {
-        console.log(response);
         return null;
       }
-      console.log(response.body);
+
+      return socket.emit('newDocument', response.body);
+    });
+};
+
+const updateDocument = (data, documentId) => {
+  request
+    .put(`api/documents/${documentId}`)
+    .send(data)
+    .set('x-access-token', localStorage.getItem('token'))
+    .end((error, response) => {
+      if (error) {
+        return null;
+      }
 
       return socket.emit('newDocument', response.body);
     });
@@ -43,38 +51,36 @@ const deleteDocument = (documentId) => {
 class DocumentCard extends React.Component {
   constructor(props) {
     super(props);
+    const titleState = convertFromRaw(JSON.parse(props.title));
+    const contentState = convertFromRaw(JSON.parse(props.content));
 
-    this.state = { editorState: EditorState.createEmpty(), newState: EditorState.createEmpty() };
-    this.onChange = this.onChange.bind(this); 
-    this.handleKeyCommand = this.handleKeyCommand.bind(this);
-    this.onBoldClick = this.onBoldClick.bind(this);
+    this.state = {
+      titleState: EditorState.createWithContent(titleState),
+      contentState: EditorState.createWithContent(contentState),
+    };
+    this.onTitleChange = this.onTitleChange.bind(this);
+    this.onContentChange = this.onContentChange.bind(this);
   }
-  handleKeyCommand(command) {
-    const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
-    if (newState) {
-      this.onChange(newState);
-      return true;
 
+  onTitleChange(titleState) {
+    if (this.props.canDelete) {
+      this.setState({ titleState });
+    } else {
+      return null;
     }
-    return false;
-
   }
 
-  onBoldClick() {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
-  }
-
-  onChange(evt) {
-    const state = this.state.editorState.getCurrentContent()
-    const ab = convertToRaw(state);
-    console.log(JSON.stringify(ab));
-    const bc = convertFromRaw(ab);
-    this.setState({newState: EditorState.createWithContent(bc), value: evt.target.value});
+  onContentChange(contentState) {
+    if (this.props.canDelete) {
+      this.setState({ contentState });
+    } else {
+      return null;
+    }
   }
 
   render() {
     return (
-      <Card style={{ width: '300px', margin: '20px', float: 'left' }}>
+      <Card style={{ width: '350px', margin: '20px', float: 'left' }}>
         <CardHeader
           style={{ fontSize: '15px', cursor: 'pointer' }}
           title={this.props.owner.username}
@@ -92,50 +98,71 @@ class DocumentCard extends React.Component {
             }}
           />
           <CardTitle
-            title={this.props.title}
-            actAsExpander
-            style={{ paddingTop: '0px', paddingBottom: '0px' }}
-          />
-          <CardText expandable>
-            <div>
-              <div style={{ fontWeight: '300' }}>
-                {this.props.content}
-                <Editor
-                  editorState={this.state.editorState}
-                  onChange={this.onChange}
-                  handleKeyCommand={this.handleKeyCommand}
-                />
-              </div>
-            </div>
-          </CardText>
-          <CardActions style={{ textAlign: 'right' }}>
-            <Chip
-              style={{
-                float: 'left',
-                marginBottom: '12px',
-                marginLeft: '7px',
-                backgroundColor: this.props.isPublic ? 'lightgreen' : 'lightblue'
-              }}
-              onTouchTap={() => {
-                fetchDocuments({ category: this.props.category }, (action) => {
-                  store.dispatch(action);
-                });
-              }}
-            >
-              {this.props.category}
-            </Chip>
-            <FlatButton
-              label="Delete"
-              secondary
-              disabled={!this.props.canDelete}
-              onTouchTap={(event) => {
-                event.preventDefault();
-
-                deleteDocument(this.props.documentId);
-              }}
+            title={
+              <Editor
+                editorState={this.state.titleState}
+                onChange={this.onTitleChange}
+                onBlur={() => {
+                  if (this.props.canDelete) {
+                    const title = convertToRaw(this.state.titleState.getCurrentContent());
+                    const titleString = JSON.stringify(title);
+                    updateDocument({ title: titleString }, this.props.documentId);
+                  } else {
+                    return null;
+                  }
+                }}
+              />
+              }
+              actAsExpander
+              style={{ paddingTop: '0px', paddingBottom: '0px' }}
             />
-          </CardActions>
-        </Card>
+            <CardText expandable>
+              <div>
+                <div style={{ fontWeight: '300' }}>
+                  <Editor
+                    editorState={this.state.contentState}
+                    onChange={this.onContentChange}
+                    onBlur={() => {
+                      if (this.props.canDelete) {
+                        const content = convertToRaw(this.state.contentState.getCurrentContent());
+                        const contentString = JSON.stringify(content);
+                        updateDocument({ content: contentString }, this.props.documentId);
+                      } else {
+                        return null;
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            </CardText>
+            <CardActions style={{ textAlign: 'right' }}>
+              <Chip
+                style={{
+                  float: 'left',
+                  marginBottom: '12px',
+                  marginLeft: '7px',
+                  backgroundColor: this.props.isPublic ? 'lightgreen' : 'lightblue'
+                }}
+                onTouchTap={() => {
+                  fetchDocuments({ category: this.props.category }, (action) => {
+                    store.dispatch(action);
+                  });
+                }}
+              >
+                {this.props.category}
+              </Chip>
+              <FlatButton
+                label="Delete"
+                secondary
+                disabled={!this.props.canDelete}
+                onTouchTap={(event) => {
+                  event.preventDefault();
+
+                  deleteDocument(this.props.documentId);
+                }}
+              />
+            </CardActions>
+          </Card>
     );
   }
 }
