@@ -1,24 +1,24 @@
 import request from 'superagent';
 import constants from '../constants';
 
-export function logInUser(username, password) {
+const urlPrefix = process.env.NODE_ENV ===
+  'test' ? 'http://localhost:8181/' : '';
+
+export function logInUser(userCredentials, callback) {
   request
-    .post('api/users/login')
-    .send({
-      username,
-      password
-    })
+    .post(`${urlPrefix}api/users/login`)
+    .send(userCredentials)
     .end((error, response) => {
       if (error) {
-        return ({
+        callback({
           type: constants.LOG_IN_USER_FAILURE,
           payload: {
             error
           }
         });
       }
-      localStorage.setItem('token', response.body.token);
-      return ({
+
+      callback({
         type: constants.LOG_IN_USER_SUCCESS,
         payload: {
           token: response.body.token

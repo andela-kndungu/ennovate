@@ -1,6 +1,9 @@
-import { test } from '../app/redux/actions';
+import {
+  test,
+  logInUser
+} from '../app/redux/actions';
 import nock from 'nock';
-import request from 'superagent';
+import constants from '../app/redux/constants';
 
 describe('Actions', () => {
   describe('Test', () => {
@@ -13,20 +16,27 @@ describe('Actions', () => {
       done();
     });
   });
-  describe('Nock', () => {
-    it('Mocks http requests', (done) => {
-      nock('http://google.com')
-        .get('/ab')
+
+  describe('logInUser', () => {
+    it('Creates action with token for valid user', (done) => {
+      nock('http://localhost:8181')
+        .post('/api/users/login', {
+          username: 'validUsername',
+          password: 'validPassword'
+        })
         .reply(200, {
-          id: '1asdf23ABC',
+          token: 'aTokenString',
         });
-      request
-        .get('http://google.com/ab')
-        .end((error, response) => {
-          console.log(error);
-          (response.body).should.eql({ id: '123ABC' });
-          done();
-        });
+      const userCredentials = {
+        username: 'validUsername',
+        password: 'validPassword'
+      };
+
+      logInUser(userCredentials, (action) => {
+        (action.type).should.eql(constants.LOG_IN_USER_SUCCESS);
+        (action.payload.token).should.be.a('string');
+        done();
+      });
     });
   });
 });
