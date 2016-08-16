@@ -59,3 +59,8 @@ export function fetchCategories(callback) {
       });
     });
 }
+
+export function test() {
+  return ({ a: 'a', b: 'b' });
+}
+
