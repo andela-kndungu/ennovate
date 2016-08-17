@@ -38,6 +38,27 @@ describe('Actions', () => {
         done();
       });
     });
+
+    it('Creates action with error for invalid user', (done) => {
+      nock('http://localhost:8181')
+        .post('/api/users/login', {
+          username: 'ivalidUsername',
+          password: 'ivalidPassword'
+        })
+        .reply(401, {
+          token: 'aTokenString',
+        });
+      const userCredentials = {
+        username: 'ivalidUsername',
+        password: 'ivalidPassword'
+      };
+
+      logInUser(userCredentials, (action) => {
+        (action.type).should.eql(constants.LOG_IN_USER_FAILURE);
+        action.payload.error.should.be.ok;
+        done();
+      });
+    });
   });
 });
 

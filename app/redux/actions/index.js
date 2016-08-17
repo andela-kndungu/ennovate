@@ -10,15 +10,14 @@ export function logInUser(userCredentials, callback) {
     .send(userCredentials)
     .end((error, response) => {
       if (error) {
-        callback({
+        return callback({
           type: constants.LOG_IN_USER_FAILURE,
           payload: {
             error
           }
         });
       }
-
-      callback({
+      return callback({
         type: constants.LOG_IN_USER_SUCCESS,
         payload: {
           token: response.body.token

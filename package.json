@@ -17,7 +17,7 @@
     "dev": "NODE_ENV=development nodemon",
     "postinstall": "npm run build",
     "start": "NODE_ENV=production node compiled/index.js",
-    "test": "NODE_ENV=test mocha --compilers js:babel-core/register --require ./test/setup.js 'test/**/*.@(js|jsx)'"
+    "test": "NODE_ENV=test mocha --compilers js:babel-core/register --require ./test/setup.js 'test/**/*.@(js|jsx)' -w"
   },
   "repository": {
     "type": "git",
