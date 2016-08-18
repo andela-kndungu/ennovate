@@ -1,22 +1,13 @@
 import {
-  test,
-  logInUser
+  logInUser,
+  fetchDocuments,
+  fetchPublicDocuments,
+  fetchCategories
 } from '../app/redux/actions';
 import nock from 'nock';
 import constants from '../app/redux/constants';
 
 describe('Actions', () => {
-  describe('Test', () => {
-    it('Return a b', (done) => {
-      // execute
-      const action = test();
-
-      // verify
-      (action).should.eql({ a: 'a', b: 'b' });
-      done();
-    });
-  });
-
   describe('logInUser', () => {
     it('Creates action with token for valid user', (done) => {
       nock('http://localhost:8181')
@@ -56,6 +47,48 @@ describe('Actions', () => {
       logInUser(userCredentials, (action) => {
         (action.type).should.eql(constants.LOG_IN_USER_FAILURE);
         action.payload.error.should.be.ok;
+        done();
+      });
+    });
+  });
+
+  describe('fetchDocuments', () => {
+    it('Fetches documents from the server', (done) => {
+      nock('http://localhost:8181')
+        .get('/api/documents')
+        .reply(200, [{}, {}, {}]);
+
+      fetchDocuments(null, null, (action) => {
+        (action.type).should.eql(constants.FETCHED_DOCUMENTS);
+        (action.payload).should.be.an('array');
+        done();
+      });
+    });
+  });
+
+  describe('fetchPublicDocuments', () => {
+    it('Fetches pubic documents from the server', (done) => {
+      nock('http://localhost:8181')
+        .get('/api/documents/public')
+        .reply(200, [{}, {}, {}]);
+
+      fetchPublicDocuments(null, (action) => {
+        (action.type).should.eql(constants.FETCHED_DOCUMENTS);
+        (action.payload).should.be.an('array');
+        done();
+      });
+    });
+  });
+
+  describe('fetchCategories', () => {
+    it('Fetches categories from the server', (done) => {
+      nock('http://localhost:8181')
+        .get('/api/categories')
+        .reply(200, [{}, {}, {}]);
+
+      fetchCategories((action) => {
+        (action.type).should.eql(constants.FETCHED_CATEGORIES);
+        (action.payload).should.be.an('array');
         done();
       });
     });

@@ -26,40 +26,36 @@ export function logInUser(userCredentials, callback) {
     });
 }
 
-export function fetchDocuments(query, callback) {
-  request.get('api/documents')
+export function fetchDocuments(token, query, callback) {
+  request.get(`${urlPrefix}api/documents`)
     .query(query)
-    .set('x-access-token', localStorage.getItem('token'))
+    .set('x-access-token', token)
     .end((error, response) => {
       return callback({
-        type: 'FETCHED_DOCUMENTS',
+        type: constants.FETCHED_DOCUMENTS,
         payload: response.body
       });
     });
 }
 
 export function fetchPublicDocuments(query, callback) {
-  request.get('api/documents/public')
+  request.get(`${urlPrefix}api/documents/public`)
     .query(query)
     .end((error, response) => {
       return callback({
-        type: 'FETCHED_DOCUMENTS',
+        type: constants.FETCHED_DOCUMENTS,
         payload: response.body
       });
     });
 }
 
 export function fetchCategories(callback) {
-  request.get('api/categories')
+  request.get(`${urlPrefix}api/categories`)
     .end((error, response) => {
       return callback({
-        type: 'FETCHED_CATEGORIES',
+        type: constants.FETCHED_CATEGORIES,
         payload: response.body
       });
     });
-}
-
-export function test() {
-  return ({ a: 'a', b: 'b' });
 }
 
