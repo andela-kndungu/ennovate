@@ -6,6 +6,9 @@ import {
 } from '../app/redux/actions';
 import nock from 'nock';
 import constants from '../app/redux/constants';
+import { should } from 'chai';
+
+should();
 
 describe('Actions', () => {
   describe('logInUser', () => {

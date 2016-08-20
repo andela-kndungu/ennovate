@@ -1,5 +1,6 @@
-import jwtDecode from 'jwt-decode';
 import { fromJS } from 'immutable';
+
+import authReducer from './auth.js';
 
 const defaultState = fromJS({
   auth: {
@@ -18,22 +19,9 @@ export default function (state = defaultState, action) {
   let stateDuplicate = state;
   switch (action.type) {
     case 'LOG_IN_USER_SUCCESS':
-      stateDuplicate = stateDuplicate.updateIn(
-        ['auth', 'isAuthenticated'],
-        () => {
-          return true;
-        }
-      );
-
-      stateDuplicate = stateDuplicate.updateIn(
-        ['auth', 'userDetails'],
-        () => {
-          const userInfo = jwtDecode(action.payload.token);
-          return fromJS(userInfo);
-        }
-      );
-
-      return stateDuplicate;
+      return state.update('auth', () => {
+        return authReducer(action.payload);
+      });
     case 'FETCHED_DOCUMENTS':
       return stateDuplicate.update(
         'documents',
