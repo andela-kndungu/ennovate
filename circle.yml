@@ -3,6 +3,6 @@ machine:
     version: 6.10.0
 test:
   override:
-    - npm run lint
+    - npm outdated
     - npm -h
 
