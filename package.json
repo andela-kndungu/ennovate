@@ -17,7 +17,8 @@
     "dev": "NODE_ENV=development nodemon",
     "postinstall": "npm run build",
     "start": "NODE_ENV=production node compiled/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
